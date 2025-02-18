@@ -1,0 +1,164 @@
+body{
+    direction: rtl;
+}
+.header{
+    background-color:#6c7a89;
+    margin:0px;
+    display:block;
+    padding:30px;
+    padding-inline:20px;
+    font-size:25px;
+    color:#fff;
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+}
+.header p{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);        
+}
+.body{
+    display:flex;
+    justify-content:center;
+}
+
+
+
+table {
+    width: 80%; 
+    border-collapse: collapse;
+    position:relative;
+    border-radius:10px;
+    margin:auto;
+    margin-top:30px;
+    color:#000;
+}
+table tr td {
+    padding-inline:15px;
+    padding-block:4px;
+    font-size: 13px;
+    text-align:start;
+    border:1px solid #000;
+}
+table tr td:not(table tr td:first-child) {
+    padding-right:15px;
+    text-align: start;
+}
+table tr td:first-child {
+   text-align: right;
+}
+table thead th {
+padding-inline: 15px;
+padding-block: 10px;
+color: #000;
+font-size: 13px;
+text-align: start;
+border-bottom: 2px solid #000; 
+border:1px solid #000;
+
+}
+
+button{
+    padding:7px 12px ;
+    background-color: #6c7a89;
+    color:#fff;
+    border:0px;
+    width:60px;
+    border-radius:5px;
+    position:absolute;
+    left:50%;
+    transform: translateX(-50%);
+}
+button:hover{
+    background-color: #eec8ae;
+color:#6c7a89;
+}
+.sidebar{
+    background-color:#eec8ae;
+    padding:10px;
+    padding-top:30px;
+    border-radius:15px ;
+    margin-bottom: 20px;
+}
+.sidebar ul{
+    margin:0px;
+    list-style:none;
+    display: flex;
+    justify-content:space-evenly;
+}
+.sidebar ul li{
+    margin-bottom:10px;
+}
+.sidebar ul li:hover{
+    transition-duration: 0.5s;
+    transform: translateY(5px);
+}
+.sidebar ul a{
+    text-decoration: none;
+    color:#000;
+    font-size:23px;
+}
+
+@media print {
+    body {
+        font-size: 14px;
+        color: black;
+    }
+    .body .content table {
+        width: 100%; 
+        border-collapse: collapse;
+        position:relative;
+        border-radius:10px;
+        margin:auto;
+        margin-top:30px;
+    }
+    .body .content table tr td {
+        padding-inline:15px;
+        padding-block:4px;
+        color:#000;
+        font-size:20px;
+        text-align:center;
+        border:1px solid #000;
+    }
+    table {
+        width: 80%; 
+        border-collapse: collapse;
+        position:relative;
+        border-radius:10px;
+        margin:auto;
+        margin-top:30px;
+    }
+    table tr td {
+        padding-inline:15px;
+        padding-block:4px;
+        color:#000;
+        font-size: 13px;
+        text-align:start;
+        border:1px solid #000;
+    }
+    table tr td:not(table tr td:first-child) {
+        padding-right:15px;
+        text-align: start;
+    }
+    table tr td:first-child {
+       text-align: right;
+    }
+    table thead th {
+    padding-inline: 5px;
+    padding-block: 10px;
+    color: #000;
+    font-size: 13px;
+    text-align: start;
+    border-bottom: 2px solid #000; 
+    border:1px solid #000;
+    
+    }
+    body{
+        border:2px solid #000;
+    }
+    
+    .no-print {
+        display: none;
+    }
+}

@@ -1,0 +1,241 @@
+
+
+
+.header{
+    background-color:#6c7a89;
+    margin:0px;
+    display:block;
+    padding:30px;
+    padding-inline:20px;
+    font-size:25px;
+    color:#fff;
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+}
+.header p{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);        
+}
+.body{
+    display:flex;
+    justify-content: space-evenly;
+}
+
+
+.body .content{
+    position:relative;
+    padding:15px;
+    border-radius:15px;
+    width:95%;
+    background-color:#eec8ae;
+    border-right:solid 5px #6c7a89;
+    padding-bottom:50px;
+}
+
+
+
+
+
+.content #add_product,.content #choose_customer{
+    padding:10px;
+    background-color:#afb6bd;
+    color:#003;
+    border:0px;
+    font-size:20px;
+    border-radius: 5px;
+} 
+.content #add_product:hover,.content #choose_customer:hover{
+    background-color:#003;
+    color:#afb6bd;
+}
+
+
+.body  table {
+    border-collapse: collapse;
+    margin-top:40px;
+    padding:30px;
+    background-color: #6c7a89;
+    border-radius:10px;
+
+}
+
+#user_table td{
+    width:fit-content;
+}
+
+.body  table tr td {
+    padding-inline:10px;
+    padding-block:2px;
+    color:#fff;
+    font-size:20px;
+    border-bottom:0.5px solid #fff;
+    text-align: start;
+}
+.body  table thead th {
+padding:5px;
+color: #fff;
+font-size: 20px;
+text-align: center;
+border-bottom: 3px solid #fff; 
+}
+
+.add_product_main,.add_customer_main{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    background: rgba(0, 0, 0, 0.7);
+    display:flex;
+    justify-content: center;
+    align-items:flex-start;
+    display:none;
+
+}
+.add_product_main .product,.add_customer_main .customer{
+    padding:30px;
+    position:relative;
+    background-color:#fff;
+    width:60%;
+    border-radius:5px;
+    display:flex;
+   flex-direction:column;
+   margin-bottom:30px;
+    padding-bottom:100px
+}
+
+
+#addProduct:hover{
+    transform:translateY(5px);
+    transition-duration: 0.5s;
+
+}
+
+.add_product_main .product i ,.add_customer_main .customer i{
+
+    font-size:35px;
+}
+
+#search_div,#search_div_customer{
+
+    border:3px solid #eec8ae;
+    border-radius:5px;
+}
+#search,#search_customer{
+    padding:10px;
+    font-size:20px;
+    padding-left:30px;
+    outline:0px;
+    
+}
+.product_header,.customer_header{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+.content .bill{
+    position:relative;
+    display:flex;
+    justify-content: space-between;
+}
+.content  .total_price{
+    padding:15px ;
+    margin-top:80px;
+    color:#fff;
+    background-color:#6c7a89;
+    border-radius:5px;
+    font-weight:bold;
+
+}
+
+.content .bill .total_price span:last-child{
+margin-right:40px;
+
+}
+
+.parent-span-of-plus-minus{
+    position:relative;
+}
+.span-of-plus-minus{
+    position:absolute;
+    left:0px;
+}
+
+
+th, td {
+    border: 1px solid #fff; 
+    text-align: left; 
+
+}
+.error-message {
+    background-color: tomato;
+    position: fixed;
+    padding: 14px;
+    border-radius: 5px;
+    color: white;
+    font-size: 20px;
+    top:20%;
+    left:50%;
+    transform: translateX(-50%);
+    display:none;
+}
+
+.submit_button{
+    padding:12px;
+    background-color:#afb6bd;
+    border:0px;
+    border-radius: 5px;
+    margin-top: 7px;
+    font-size:18px;
+}
+.submit_button:hover{
+    background-color:#000033;
+    color:#afb6bd
+}
+
+
+
+
+
+
+
+
+
+.sidebar{
+    background-color:#eec8ae;
+    padding:10px;
+    padding-top:30px;
+    border-radius:15px ;
+    margin-bottom: 20px;
+}
+.sidebar ul{
+    margin:0px;
+    list-style:none;
+    display: flex;
+    justify-content:space-evenly;
+}
+.sidebar ul li{
+    margin-bottom:10px;
+}
+.sidebar ul li:hover{
+    transition-duration: 0.5s;
+    transform: translateY(5px);
+}
+.sidebar ul a{
+    text-decoration: none;
+    color:#000;
+    font-size:23px;
+}
+
+#customer_choosen{
+    padding:15px;
+    background-color:#6c7a89;
+    color:#fff;
+    text-align: center;
+    margin:0px;
+    margin-top:10px;
+    width:fit-content;
+    border-radius: 5px;
+}
