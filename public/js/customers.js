@@ -52,8 +52,12 @@ function filterCustomers(searchValue) {
 function generateTableRows(filteredCustomers) {
     const tbody = document.getElementById('customers-table-body');
     tbody.innerHTML = '';
-    filteredCustomers.forEach(customer => {
+    filteredCustomers.forEach((customer,index )=> {
         const row = document.createElement('tr');
+
+        const number_cell = document.createElement('td');
+        number_cell.textContent = index+1;
+        row.appendChild(number_cell);
 
         const nameCell = document.createElement('td');
         nameCell.textContent = customer.cus_name;
@@ -82,7 +86,7 @@ function generateTableRows(filteredCustomers) {
         purchasesButton.style.padding = '5px 10px';
         purchasesButton.style.borderRadius = '3px';
         purchasesButton.addEventListener('click', () => {
-            window.location.href = `/customer/customer_purchases/${customer.id}`;
+            window.location.href = `/customers/customer_purchases/${customer.id}`;
         });
         purchasesCell.appendChild(purchasesButton);
         row.appendChild(purchasesCell);

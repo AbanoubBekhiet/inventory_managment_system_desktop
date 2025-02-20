@@ -12,15 +12,20 @@ $(function(){
         const tbody = document.getElementById('bill-table-body');
         tbody.innerHTML = ''; 
 
-        filteredBills.forEach(bill => {
+        filteredBills.forEach((bill,index )=> {
             const row = document.createElement('tr');
 
             const showBillUrl = `show_bills/show_specific_bill/${bill.id}`;
+            const bill_benifit = `show_bills/bill_binefits/${bill.id}`;
             row.innerHTML = `
+                <td >${index+1}</td>
                 <td class="name" style="width:200px;">${bill.cus_name}</td>
                 <td class="n_pieces_in_packet">${bill.phone_number}</td>
                 <td class="original_packet_price">${bill.total_price}</td>
                 <td class="selling_packet_price">${bill.created_at}</td>
+                <td class="bill_benifit">
+                    <a href="${bill_benifit}">عرض مكسب الفاتورة </a>
+                </td>
                 <td>
                     <a href="${showBillUrl}">عرض الفاتورة</a>
                 </td>

@@ -31,6 +31,8 @@
         @component("components.sidebar")
         @endcomponent
         <div class="content">
+            <a href="{{route('exporCustomers')}}"> <button class="Export">إنشاء ملف إكسيل لل منتجات</button></a>
+
             <div style="display:flex;justify-content:space-evenly;align-items:center">
                 <p> المنتجات المتوفرة في النظام</p> 
                 <input id="addCustomer" type="button" value="إضافة عميل" style="padding:10px;font-size:20px;background-color:#6c7a89;border:0px;color:#fff;border-radius:5px;">
@@ -39,6 +41,7 @@
             <table>
                 <thead>
                     <tr>
+                        <th> رقم العميل </th>
                         <th>اسم العميل </th>
                         <th>العنوان</th>
                         <th> رقم الهاتف </th>

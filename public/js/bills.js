@@ -547,15 +547,6 @@ $("#customer_table tbody").on("click", "span.edit", function(e) {
 
 
 
-// $("#customer_table tbody").on("click", "td button.remove", function(e) {
-//     let row = $(e.target).closest("tr");
-//     let pro_id = row.data("id");
-//     $("#user_table tbody tr[data-id='" + pro_id + "']").detach();
-//     row.detach();
-//     products_ids = products_ids.filter(id => id !== pro_id);
-//     listProducts();
-//     total_product_price();
-//     total_price();
-// });
+
 
 });

@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Customer;
-use App\Models\Bills;
+use App\Models\Bill;
+use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Support\facades\Auth;
+use Illuminate\Support\facades\DB;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\facades\Validator;
 
 class customersController extends Controller
@@ -106,8 +109,147 @@ class customersController extends Controller
         return redirect()->back()->with("message","تم حذف العميل بنجاح");
     }
 
-    // public function customer_purchases($customer_id){
 
-    // }
+
+
+
+    public function exporCustomers(){
+        return (new FastExcel(Customer::all()))->download('all_system_customers.xlsx');
+    }
+
+
+
+
+
+    public function customer_purchases($customer_id){
+        
+
+        $total_selling_this_month = number_format(
+            Bill::whereMonth('created_at', Carbon::now()->month)
+                ->whereYear('created_at', Carbon::now()->year)
+                ->where("cus_id","=",$customer_id)
+                ->sum('total_price')
+        );
+        $total_selling_this_year = number_format(
+            Bill::whereYear('created_at', Carbon::now()->year)
+            ->where("cus_id","=",$customer_id)
+                ->sum('total_price')
+
+        );
+
+
+        $total_selling_last_month = number_format(
+            Bill::whereMonth('created_at', Carbon::now()->month == 1 ? 12 : Carbon::now()->month - 1)  
+                ->whereYear('created_at',Carbon::now()->month == 1?Carbon::now()->year-1:Carbon::now()->year) 
+                ->where("cus_id","=",$customer_id)
+                ->sum('total_price')
+
+        );
+        
+        $total_selling_last_year = number_format(
+            Bill::whereYear('created_at', Carbon::now()->year - 1)  
+            ->where("cus_id","=",$customer_id)
+                ->sum('total_price')
+
+        );
+
+
+
+
+
+
+        $total_benefits_this_month = DB::table('bills')
+        ->join('product_bill_relations', 'bills.id', '=', 'product_bill_relations.bill_id')
+        ->join('products', 'product_bill_relations.product_id', '=', 'products.id')
+        ->select(
+            DB::raw('SUM(bills.total_price) AS total_sales'),
+            DB::raw('SUM(product_bill_relations.number_of_packets * products.original_packet_price) AS total_packet_original_price'),
+            DB::raw('SUM(product_bill_relations.number_of_pieces * (products.original_packet_price / products.n_pieces_in_packet)) AS total_piece_original_price')
+        )
+        ->whereMonth('bills.created_at', Carbon::now()->month)
+        ->whereYear('bills.created_at', Carbon::now()->year)
+        ->where("bills.cus_id","=",$customer_id)
+        ->first();
+        
+        $total_benefits_this_month_number=number_format($total_benefits_this_month->total_sales-($total_benefits_this_month->total_packet_original_price+$total_benefits_this_month->total_piece_original_price),2);
+       
+       
+        $total_benefits_this_year = DB::table('bills')
+        ->join('product_bill_relations', 'bills.id', '=', 'product_bill_relations.bill_id')
+        ->join('products', 'product_bill_relations.product_id', '=', 'products.id')
+        ->select(
+            DB::raw('SUM(bills.total_price) AS total_sales'),
+            DB::raw('SUM(product_bill_relations.number_of_packets * products.original_packet_price) AS total_packet_original_price'),
+            DB::raw('SUM(product_bill_relations.number_of_pieces * (products.original_packet_price / products.n_pieces_in_packet)) AS total_piece_original_price')
+        )
+        ->whereYear('bills.created_at', Carbon::now()->year)
+        ->where("bills.cus_id","=",$customer_id)
+        ->first();
+        $total_benefits_this_year_number=number_format($total_benefits_this_year->total_sales-($total_benefits_this_year->total_packet_original_price+$total_benefits_this_year->total_piece_original_price),2);
+
+
+
+
+
+
+
+
+
+
+
+
+        $total_benefits_last_month = DB::table('bills')
+        ->join('product_bill_relations', 'bills.id', '=', 'product_bill_relations.bill_id')
+        ->join('products', 'product_bill_relations.product_id', '=', 'products.id')
+        ->select(
+            DB::raw('SUM(bills.total_price) AS total_sales'),
+            DB::raw('SUM(product_bill_relations.number_of_packets * products.original_packet_price) AS total_packet_original_price'),
+            DB::raw('SUM(product_bill_relations.number_of_pieces * (products.original_packet_price / products.n_pieces_in_packet)) AS total_piece_original_price')
+        )
+        ->whereMonth('bills.created_at', Carbon::now()->month==1?12:Carbon::now()->month-1)
+        ->whereYear('bills.created_at', Carbon::now()->month==1?Carbon::now()->year-1:Carbon::now()->year)
+        ->where("bills.cus_id","=",$customer_id)
+        ->first();
+        
+        $total_benefits_last_month_number=number_format($total_benefits_last_month->total_sales-($total_benefits_last_month->total_packet_original_price+$total_benefits_last_month->total_piece_original_price),2);
+        
+        
+        
+        
+        $total_benefits_last_year = DB::table('bills')
+        ->join('product_bill_relations', 'bills.id', '=', 'product_bill_relations.bill_id')
+        ->join('products', 'product_bill_relations.product_id', '=', 'products.id')
+        ->select(
+            DB::raw('SUM(bills.total_price) AS total_sales'),
+            DB::raw('SUM(product_bill_relations.number_of_packets * products.original_packet_price) AS total_packet_original_price'),
+            DB::raw('SUM(product_bill_relations.number_of_pieces * (products.original_packet_price / products.n_pieces_in_packet)) AS total_piece_original_price')
+        )
+        ->whereYear('bills.created_at', Carbon::now()->year-1)
+        ->where("bills.cus_id","=",$customer_id)
+        ->first();
+        $total_benefits_last_year_number=number_format($total_benefits_last_year->total_sales-($total_benefits_last_year->total_packet_original_price+$total_benefits_last_year->total_piece_original_price),2);
+
+        
+        $bills = DB::table("bills")
+        ->join("customers","bills.cus_id","=","customers.id")
+        ->select("bills.*","customers.cus_name","customers.phone_number")
+        ->orderByDesc('created_at')
+        ->where("cus_id","=",$customer_id)
+        ->paginate(100);
+
+
+        return view("customer_purchases",
+        [
+            "total_selling_this_month"=>$total_selling_this_month,
+            "total_selling_this_year"=>$total_selling_this_year,
+            "total_selling_last_month"=>$total_selling_last_month,
+            "total_selling_last_year"=>$total_selling_last_year,
+            "total_benefits_this_month_number"=>$total_benefits_this_month_number,
+            "total_benefits_this_year_number"=>$total_benefits_this_year_number,
+            "total_benefits_last_month_number"=>$total_benefits_last_month_number,
+            "total_benefits_last_year_number"=>$total_benefits_last_year_number,
+            "bills"=>$bills,
+            ]);
+    }
 
 }

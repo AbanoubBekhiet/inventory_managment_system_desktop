@@ -167,3 +167,21 @@
         border: 1px solid #ccc;
     }
 
+    .Export{
+        padding:10px;
+        background-color:#00c489;
+        color:#fff;
+        border:none;
+        border-radius: 5px;
+        font-size:20px;
+        cursor:pointer;
+    }
+    .Export a{
+        text-decoration: none;
+        color:#fff;
+        background-color: transparent;
+    
+    }
+    button{
+        cursor: pointer;
+    }

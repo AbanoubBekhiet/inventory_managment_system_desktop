@@ -59,6 +59,10 @@
                 <span>  مكسب هذه السنة من المبيعات</span>
                 <span> {{$total_benefits_this_year_number}} ج</span>
             </div>
+            <div style="color:#6c7a89;background-color:#fff">
+                <span>  مكسب  اليوم من المبيعات</span>
+                <span> {{$total_benefits_today_number}} ج</span>
+            </div>
         </div>
     </div>
    

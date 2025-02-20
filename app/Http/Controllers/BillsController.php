@@ -9,6 +9,8 @@ use App\Models\Customer;
 use App\Models\Product;
 use App\Models\ProductBillRelation;
 use App\Models\Bill;
+use Rap2hpoutre\FastExcel\FastExcel;
+
 class BillsController extends Controller
 {
     public function make_bills(){
@@ -74,10 +76,9 @@ class BillsController extends Controller
             ->join('bills', 'customers.id', '=', 'bills.cus_id')
             ->join('product_bill_relations', 'bills.id', '=', 'product_bill_relations.bill_id')
             ->join('products', 'products.id', '=', 'product_bill_relations.product_id')
-            ->select('customers.*', 'bills.*', 'product_bill_relations.*','products.name','products.n_pieces_in_packet')
+            ->select('customers.*', 'bills.*', 'product_bill_relations.*','products.name','products.n_pieces_in_packet','products.selling_customer_piece_price')
             ->where("bills.id","=",$bill_id)
             ->get();
-
         return view("bill",["products"=>$products]);
     }
 
@@ -188,6 +189,30 @@ class BillsController extends Controller
 
 
 
+
+
+
+
+
+
+
+
+
+
+        $total_benefits_today = DB::table('bills')
+        ->join('product_bill_relations', 'bills.id', '=', 'product_bill_relations.bill_id')
+        ->join('products', 'product_bill_relations.product_id', '=', 'products.id')
+        ->select(
+            DB::raw('SUM(bills.total_price) AS total_sales'),
+            DB::raw('SUM(product_bill_relations.number_of_packets * products.original_packet_price) AS total_packet_original_price'),
+            DB::raw('SUM(product_bill_relations.number_of_pieces * (products.original_packet_price / products.n_pieces_in_packet)) AS total_piece_original_price')
+        )
+        ->whereDay('bills.created_at', Carbon::now()->day)
+        ->first();
+        
+        $total_benefits_today_number=number_format($total_benefits_today->total_sales-($total_benefits_today->total_packet_original_price+$total_benefits_today->total_piece_original_price),2);
+       
+
         return view("statistics",
         [
             "total_money_based_on_original_price"=>$total_number_of_money_based_on_original_price,
@@ -200,6 +225,31 @@ class BillsController extends Controller
             "total_benefits_this_year_number"=>$total_benefits_this_year_number,
             "total_benefits_last_month_number"=>$total_benefits_last_month_number,
             "total_benefits_last_year_number"=>$total_benefits_last_year_number,
+            "total_benefits_today_number"=>$total_benefits_today_number,
             ]);
+    }
+
+
+    public function exportBills(){
+        return (new FastExcel(Bill::all()))->download('all_system_bills.xlsx');
+    }
+
+
+    public function bill_binefits($bill_id){
+        $total_benefits_specific_bill = DB::table('bills')
+        ->join('product_bill_relations', 'bills.id', '=', 'product_bill_relations.bill_id')
+        ->join('products', 'product_bill_relations.product_id', '=', 'products.id')
+        ->select(
+            DB::raw('SUM(bills.total_price) AS total_sales'),
+            DB::raw('SUM(product_bill_relations.number_of_packets * products.original_packet_price) AS total_packet_original_price'),
+            DB::raw('SUM(product_bill_relations.number_of_pieces * (products.original_packet_price / products.n_pieces_in_packet)) AS total_piece_original_price')
+        )
+        ->where("bills.id","=",$bill_id)
+        ->first();
+
+        $total_benefits_specific_bill_number=number_format($total_benefits_specific_bill->total_sales-($total_benefits_specific_bill->total_packet_original_price+$total_benefits_specific_bill->total_piece_original_price),2);
+
+
+        return view("bill_benifit",["total_benefits_specific_bill"=>$total_benefits_specific_bill_number]);
     }
 }

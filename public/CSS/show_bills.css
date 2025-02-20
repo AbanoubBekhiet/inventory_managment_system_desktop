@@ -179,3 +179,18 @@
     background-color:#6c7a89;
     color:#000;
 }
+.Export{
+    padding:10px;
+    background-color:#00c489;
+    color:#fff;
+    border:none;
+    border-radius: 5px;
+    font-size:20px;
+    cursor:pointer;
+}
+.Export a{
+    text-decoration: none;
+    color:#fff;
+    background-color: transparent;
+
+}

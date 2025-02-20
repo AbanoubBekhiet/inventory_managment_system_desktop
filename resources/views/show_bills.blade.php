@@ -22,6 +22,7 @@
             <li><a href="">الملف الشخصي</a></li>
             <li><a href="{{route('customers')}}">الزبائن</a></li>
             <li><a href="{{route('products_view')}}">المنتجات</a></li>
+            <li><a href="{{route('imports_view')}}">إضافة الوارد</a></li>
             <li><a href="{{route(name: 'categories')}}">الفئات</a></li>
             <li><a href="{{route(name: 'show_bills')}}">الفواتير </a></li>
             <li><a href="{{route(name: 'make_bills')}}">عمل فاتورة</a></li>
@@ -32,6 +33,8 @@
     <div class="body">
         <div class="content">
             <div class="filters">
+                <a href="{{route('exportBills')}}"><button class="Export">إنشاء ملف إكسيل لل فواتير</button></a>
+
                 <label class="day">
                     <input  type="checkbox" name="day" id="day" checked>
                     <span class="checkmark"></span>
@@ -50,21 +53,25 @@
                 <table>
                     <thead>
                         <tr>
+                            <th> رقم الفاتورة </th>
                             <th>اسم العميل </th>
                             <th>رقم الهاتف</th>
                             <th>قيمة الفاتورة الاجمالية</th>
                             <th>التاريخ</th>
+                            <th>رؤية مكسب الفاتورة</th>
                             <th>العمليات</th>
                         </tr>
                     </thead>
                     <tbody id="bill-table-body">
-                        @foreach ($bills_with_limit as $bill)
+                        @foreach ($bills_with_limit as $bill =>$index)
                             <tr>
-                                <td>{{$bill->cus_name}}</td>
-                                <td>{{$bill->phone_number}}</td>
-                                <td>{{$bill->total_price}}</td>
-                                <td>{{$bill->created_at}}</td>
-                                <td><a href={{route("show_specific_bill",$bill->id)}}>عرض الفاتورة</a></td>
+                                <td>{{$bill+1}}</td>
+                                <td>{{$index->cus_name}}</td>
+                                <td>{{$index->phone_number}}</td>
+                                <td>{{$index->total_price}}</td>
+                                <td>{{$index->created_at}}</td>
+                                <td><a href="{{route("bill_binefits",$index->id)}}">عرض مكسب الفاتورة</a></td>
+                                <td><a href="{{route("show_specific_bill",$index->id)}}">عرض الفاتورة</a></td>
                             </tr>
                         @endforeach
                     </tbody>  

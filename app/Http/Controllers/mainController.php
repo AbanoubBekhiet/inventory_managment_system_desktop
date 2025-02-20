@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -75,9 +75,9 @@ class mainController extends Controller
             "piece_selling_price" => "required|numeric|min:0",
             "number_of_exciting_packets" => "required|integer|min:0",
             "existing_number_of_pieces" => "required|integer|min:0",
+            "selling_customer_piece_price" => "integer|min:0",
             "accept_pieces" => "required",
         ], [
-            // 'product_name.unique' => 'اسم المنتج موجود فعلاً',
             'required' => 'يجب ادخال الحقل',
             'product_name.unique' => 'اسم المنتج موجود فعلاً',
             'number_of_pieces' => 'عدد القطع اقل من 1',
@@ -86,6 +86,7 @@ class mainController extends Controller
             'piece_selling_price' => 'السعر اقل من 0',
             'number_of_exciting_packets' => 'عدد الكراتين اقل من 0',
             'existing_number_of_pieces' => 'عدد الكراتين اقل من 0',
+            'selling_customer_piece_price.integer' => 'يجب إدخال رقم',
             'accept_pieces' => 'لم يتم تحديد هل المنتج يقبل التجزأة ام لا',
         ]);
         $product = new Product();
@@ -99,6 +100,7 @@ class mainController extends Controller
         $product->exicting_number_of_pieces = $request->number_of_exciting_packets;
         $product->existing_number_of_pieces = $request->existing_number_of_pieces;
         $product->accept_pieces = $request->accept_pieces;
+        $product->selling_customer_piece_price = $request->selling_customer_piece_price;
         $product->save(); 
     
         return redirect()->route('products_view')
@@ -123,7 +125,7 @@ class mainController extends Controller
 {
     try {
         $rules = [
-            'type' => 'required|string|in:name,n_pieces_in_packet,original_packet_price,selling_packet_price,piece_price,exicting_number_of_pieces,existing_number_of_pieces',
+            'type' => 'required|string|in:name,n_pieces_in_packet,original_packet_price,selling_packet_price,piece_price,exicting_number_of_pieces,existing_number_of_pieces,selling_customer_piece_price',
             'value' => 'required',
         ];
 
@@ -169,4 +171,42 @@ class mainController extends Controller
     }
 }
 
+
+
+
+    public function exportProducts(){
+        return (new FastExcel(Product::all()))->download('all_system_products.xlsx');
+    }
+
+
+    public function imports_view(){
+        $products=Product::all();
+        return view("imports_view",["products"=>$products]);
+    }
+    public function add_quantity(Request $request,$product_id){
+        $request->validate([
+            "packets_number"   => "numeric|min:0",
+            "number_of_pieces" => "nullable|numeric|min:0"
+        ], [
+            "packets_number.numeric"  => "يجب إدخال قيمة عددية لعدد الكراتين.",
+            "packets_number.min"      => "يجب إدخال عدد الكراتين كقيمة موجبة.",
+        
+            "number_of_pieces.numeric" => "يجب إدخال قيمة عددية لعدد القطع.",
+            "number_of_pieces.min"     => "يجب إدخال عدد القطع كقيمة موجبة."
+        ]);
+        
+        $product=Product::findOrFail($product_id);
+        $old_number_of_packets=$product->exicting_number_of_pieces;
+        $old_number_of_pieces=$product->existing_number_of_pieces;
+
+
+        if($request->packets_number){
+            $product->existing_number_of_pieces=$old_number_of_pieces+$request->number_of_pieces;
+        }
+        if($request->packets_number){
+            $product->exicting_number_of_pieces=$old_number_of_packets+$request->packets_number;
+        }
+        $product->save();
+        return to_route("imports_view")->with("message","تم إضافة الكمية بنجاح");
+    }
 }

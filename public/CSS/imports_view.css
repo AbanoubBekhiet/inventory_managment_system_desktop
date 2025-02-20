@@ -34,22 +34,20 @@
 }
 .body{
     display:flex;
-    flex-direction:column;
 }
 
 
 .body .content{
     position:relative;
-    padding:15px;
+    padding:30px;
     border-radius:15px;
-    width:95%;
+    width:80%;
     background-color:#eec8ae;
-    padding-bottom:50px;
-    margin: auto;
+    border-right:solid 5px #6c7a89;
 }
 .body .content table {
-    width: 100%; 
-    border-collapse: collapse;
+    width: 70%; 
+border-collapse: collapse;
     position:relative;
     background-color: #6c7a89;
     border-radius:10px;
@@ -72,7 +70,7 @@ text-align: center;
 border-bottom: 2px solid #fff; 
 }
 
-.add_product_main{
+.add_quantity_main{
     position:absolute;
     top:0;
     left:0;
@@ -80,14 +78,16 @@ border-bottom: 2px solid #fff;
     background: rgba(0, 0, 0, 0.7);
     display:flex;
     justify-content: center;
+    align-items:center;
     display:none;
 
 }
-.add_product_main .product{
+.add_quantity_main .product{
     padding:30px;
     position:relative;
     background-color:#fff;
-    width:60%;
+    /* width:60%; */
+    height:fit-content;
     border-radius:5px;
     display:flex;
     justify-content:center ;
@@ -95,27 +95,19 @@ border-bottom: 2px solid #fff;
 
 }
 
-.add_product_main .product form>div:not(:last-child){
+.add_quantity_main .product form>div:not(:last-child){
     display:flex;
     flex-direction:column;
     width:45%;
     margin-bottom:15px;
 }
-.add_product_main .product form #accept_pieces_div{
-    position:relative;
-    bottom:30px;
-    display:flex;
-    flex-direction: row;
-    align-items:center;
-    justify-content:space-between;
 
-}
-#addProduct:hover{
+#add_quantity:hover{
     transform:translateY(5px);
     transition-duration: 0.5s;
 
 }
-.add_product_main .product form{
+.add_quantity_main .product form{
     position:relative;
     display:flex;
     justify-content:space-between;
@@ -125,19 +117,16 @@ border-bottom: 2px solid #fff;
     width:80%;
 
 }
-.add_product_main .product input[type='text'],
-.add_product_main .product input[type='number'],
-.add_product_main .product select
+.add_quantity_main .product input[type='text'],
+.add_quantity_main .product input[type='number'],
+.add_quantity_main .product select
 {
     padding:10px;
     font-size:20px;
     margin-top:20px;
 }
-.add_product_main .product input[type='submit']{
-    position:absolute;
-    bottom:10px;
-    left:50%;
-    transform:translateX(-50%);
+.add_quantity_main .product input[type='submit']{
+    margin-inline:auto;
     padding:13px;
     border:0px;
     background-color:#6c7a89;
@@ -147,7 +136,7 @@ border-bottom: 2px solid #fff;
     padding-inline:20px;
     font-size:20px;
 }
-.add_product_main .product i{
+.add_quantity_main .product i{
     position: absolute;
     top:20px;
     right:20px;
@@ -168,73 +157,15 @@ border-bottom: 2px solid #fff;
     text-align:center;
 }
 
-input[type="radio"] {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    width: 16px;
-    height: 16px;
-    border: 2px solid #ccc;
-    border-radius: 50%;
-    outline: none;
-    cursor: pointer;
-}
-
-input[type="radio"]:checked {
-    border-color: #6c7a89;
-    background-color: #6c7a89;
-}
-.Export{
+.add_quantity_button{
     padding:10px;
-    background-color:#00c489;
-    color:#fff;
-    border:none;
-    border-radius: 5px;
-    font-size:20px;
-    cursor:pointer;
-}
-.Export a{
-    text-decoration: none;
-    color:#fff;
-    background-color: transparent;
-
-}
-.sidebar{
+    border:0px;
+    border-radius:5px;
     background-color:#eec8ae;
-    padding:10px;
-    padding-top:30px;
-    border-radius:15px ;
-    margin-bottom: 20px;
+    color:#6c7a89;
+    font-size:20px;
 }
-.sidebar ul{
-    margin:0px;
-    list-style:none;
-    display: flex;
-    justify-content:space-evenly;
-}
-.sidebar ul li{
-    margin-bottom:10px;
-}
-.sidebar ul li:hover{
-    transition-duration: 0.5s;
-    transform: translateY(5px);
-}
-.sidebar ul a{
-    text-decoration: none;
-    color:#000;
-    font-size:23px;
+.add_quantity_button:hover{
+    background-color:#000033;
 }
 
-.buttons_div{
-    display:flex;
-    justify-content: space-between;
-}
-.buttons_div form button{
-    padding:10px;
-    background-color:#00c489;
-    color:#fff;
-    border:none;
-    border-radius: 5px;
-    font-size:20px;
-    cursor:pointer;
-}

@@ -59,6 +59,14 @@ return [
             'throw' => false,
             'report' => false,
         ],
+        'google' => [
+            'driver' => 'google',
+            'credentials' => storage_path('app/google-drive.json'),
+            'folder_id' => env('GOOGLE_DRIVE_FOLDER_ID'),
+            'authConfig' => storage_path('app/google-drive.json'), // Path to your service account file
+
+        ],
+
 
     ],
 

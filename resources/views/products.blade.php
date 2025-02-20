@@ -25,9 +25,28 @@
 
     <div class="body">
 
-        @component("components.sidebar")
-        @endcomponent
+        <div class="sidebar">
+            <ul>
+                <li><a href="{{route('customers')}}">الزبائن</a></li>
+                <li><a href="{{route('products_view')}}">المنتجات</a></li>
+                <li><a href="{{route('imports_view')}}">إضافة الوارد</a></li>
+                <li><a href="{{route( 'categories')}}">الفئات</a></li>
+                <li><a href="{{route( 'show_bills')}}">الفواتير </a></li>
+                <li><a href="{{route( 'make_bills')}}">عمل فاتورة</a></li>
+                <li><a href="{{route( 'statistics')}}">إحصائيات</a></li>
+            </ul>
+        </div>
         <div class="content">
+            <div class="buttons_div">
+                <a href="{{route('exportProducts')}}"><button class="Export">إنشاء ملف إكسيل لل منتجات</button></a>
+                <form action="{{ route('backup.database') }}" method="GET">
+                    @csrf
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        عمل نسخة احتياطية من قاعدة البيانات كاملة
+                    </button>
+                </form>
+            </div>
+            
             <div style="display:flex;justify-content:space-evenly;align-items:center">
                 <p> المنتجات المتوفرة في النظام</p> 
                 <input id="addProduct" type="button" value="إضافة منتج" style="padding:10px;font-size:20px;background-color:#6c7a89;border:0px;color:#fff;border-radius:5px;">
@@ -36,6 +55,7 @@
             <table>
                 <thead>
                     <tr>
+                        <th>رقم المنتج </th>
                         <th>الصنف </th>
                         <th>عدد القطع في العلبة</th>
                         <th>سعر استلام الكرتونة </th>
@@ -43,6 +63,7 @@
                         <th>سعر بيع القطعة</th>
                         <th>  عدد الكراتين المتوفرة</th>
                         <th> عدد القطع او الاكياس المتوفرة</th>
+                        <th> سعر القطعة للمستهلك</th>
                         <th> هل المنتج يقبل التجزأة</th>
                         <th> العمليات</th>
                     </tr>
@@ -116,6 +137,10 @@
                 <div style="margin-bottom:60px;">
                     <label for="existing_number_of_pieces">ادخل عدد الكراتين الموفرة </label>
                     <input id="existing_number_of_pieces" type="number" name="existing_number_of_pieces" id="existing_number_of_pieces" value="{{old('existing_number_of_pieces')}}">
+                </div>
+                <div style="margin-bottom:60px;">
+                    <label for="selling_customer_piece_price">ادخل سعر بيع القطعة للمستهلك   </label>
+                    <input id="selling_customer_piece_price" type="number" name="selling_customer_piece_price" id="selling_customer_piece_price" value="{{old('selling_customer_piece_price')}}">
                 </div>
                 <div id="accept_pieces_div">
                     <label>هل المنتج يقبل التجزأة</label>

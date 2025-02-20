@@ -14,9 +14,9 @@
     </div>
     <div class="sidebar no-print">
         <ul>
-            <li><a href="">الملف الشخصي</a></li>
             <li><a href="{{route('customers')}}">الزبائن</a></li>
             <li><a href="{{route('products_view')}}">المنتجات</a></li>
+            <li><a href="{{route('imports_view')}}">إضافة الوارد</a></li>
             <li><a href="{{route(name: 'categories')}}">الفئات</a></li>
             <li><a href="{{route(name: 'show_bills')}}">الفواتير </a></li>
             <li><a href="{{route(name: 'make_bills')}}">عمل فاتورة</a></li>
@@ -54,23 +54,27 @@
         <table >
             <thead >
                 <tr>
+                    <th> الرقم </th>
                     <th> المنتج </th>
                     <th> عدد الكراتين </th>
                     <th>سعر الكرتونة</th>
                     <th>عدد القطع</th>
                     <th>سعر القطعة</th>
+                    <th>سعر بيع القطعة للمستهلك</th>
                     <th>إجمالي سعر المنتج </th>
                 </tr>
             </thead>
             <tbody id="products-table-body">
-               @foreach ($products as $product)
+               @foreach ($products as $product =>$index)
                    <tr>
-                        <td>{{$product->name}} ---- {{$product->n_pieces_in_packet}} ق</td>
-                        <td>{{$product->number_of_packets}} ك </td>
-                        <td>{{$product->packet_price}}  ج</td>
-                        <td>{{$product->number_of_pieces}}  ق</td>
-                        <td>{{$product->piece_price}}  ج</td>
-                        <td>{{$product->total_product_price}}  ج</td>
+                        <td>{{$product+1}}</td>
+                        <td>{{$index->name}} ---- {{$index->n_pieces_in_packet}} ق</td>
+                        <td>{{$index->number_of_packets}} ك </td>
+                        <td>{{$index->packet_price}}  ج</td>
+                        <td>{{$index->number_of_pieces}}  ق</td>
+                        <td>{{$index->piece_price}}  ج</td>
+                        <td>@php $index->selling_customer_piece_price ?? ""  @endphp</td>
+                        <td>{{$index->total_product_price}}  ج</td>
                    </tr>
                @endforeach
             </tbody>  

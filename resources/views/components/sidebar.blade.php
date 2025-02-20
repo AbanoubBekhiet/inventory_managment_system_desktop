@@ -1,8 +1,8 @@
 <div class="sidebar">
     <ul>
-        <li><a href="">الملف الشخصي</a></li>
         <li><a href="{{route('customers')}}">الزبائن</a></li>
         <li><a href="{{route('products_view')}}">المنتجات</a></li>
+        <li><a href="{{route('imports_view')}}">إضافة الوارد</a></li>
         <li><a href="{{route( 'categories')}}">الفئات</a></li>
         <li><a href="{{route( 'show_bills')}}">الفواتير</a></li>
         <li><a href="{{route( 'make_bills')}}">عمل فاتورة</a></li>
