@@ -185,7 +185,7 @@
             if(span.parent().hasClass("number_of_packets")){
                 let td_of_number_of_packets = $("#user_table tbody td.number_of_packets[data-id='" + id_of_product + "']");
     
-                td_of_number_of_packets_current_value=parseFloat(td_of_number_of_packets.text());
+                let td_of_number_of_packets_current_value=parseFloat(td_of_number_of_packets.text());
                 if(parseFloat(td_of_number_of_packets_current_value)==0){
                     error_p.text("عدد الكراتين المتوفرة 0").
                     fadeIn(1000).

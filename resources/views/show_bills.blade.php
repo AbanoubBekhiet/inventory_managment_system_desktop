@@ -6,8 +6,8 @@
 
     <link rel="stylesheet" href="{{asset("CSS/show_bills.css")}}" >
     <title>Document</title>
-    {{-- @vite(['resources/js/app.js', 'resources/js/show_bills.js']) --}}
-
+    <script src="{{ asset('jquery.min.js')  }}"></script>
+    @vite(['resources/js/app.js', 'resources/js/show_bills.js'])
 
 
 </head>
@@ -88,7 +88,6 @@
         let bills_no_limit=@json($bills_no_limit);
         let bills_with_limit=@json($bills_with_limit);
     </script>
-    <script src="{{ asset('jquery.min.js')  }}"></script>
-    <script src="{{ asset('js/show_bills.js')  }}"></script>
+
 </body>
 </html>

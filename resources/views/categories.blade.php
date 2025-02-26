@@ -6,7 +6,8 @@
     <title>Document</title>
     <link href="{{ asset('all.min.css') }}" rel="stylesheet">
     <link href="{{ asset('CSS/categories.css') }}" rel="stylesheet">
-
+    <script src="{{ asset('jquery.min.js')  }}"></script>
+    @vite(['resources/js/app.js', 'resources/js/category.js'])
 </head>
 <body style="margin:0px;direction:rtl;background-color:#6c7a89;font-size:23px">
     <div class="header">
@@ -61,8 +62,7 @@
             </form>
         </div>
     </div>
-    <script src="{{ asset('jquery.min.js')  }}"></script>
-    <script src="{{ asset('js/category.js')  }}"></script>
+
 </body>
 </html>
 

@@ -20,6 +20,7 @@ let submit_button = document.querySelector("#submit_button");
 function showForm() {
     whole_form.style.display = "flex";
     whole_form.style.height = document.documentElement.scrollHeight + "px";
+    clearForm(); 
 }
 
 function clearForm() {
@@ -35,11 +36,12 @@ function clearForm() {
 }
 
 exit_icon.addEventListener("click", function () {
-    clearForm();
+    clearForm(); 
     whole_form.style.display = "none";
 });
 
 addProduct.addEventListener("click", function () {
+    clearForm(); 
     showForm();
 });
 
@@ -142,7 +144,7 @@ document.querySelectorAll('.delete-form').forEach(form => {
 
 //////////////////////////update customer 
 
-$(document).ready(function() {
+$(function() {
     $('.editable').on('click', function(e) {
         var $li = $(this);
         var product_id = $li.data('id');

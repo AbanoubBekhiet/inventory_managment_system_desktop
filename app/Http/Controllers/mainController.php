@@ -4,18 +4,23 @@ namespace App\Http\Controllers;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Category;
+use App\Models\User;
 use App\Models\Product;
 class mainController extends Controller
 {
     public function login_view(){
-        return view("login");
+        $users=User::count();
+        $con=true;
+        $users==0?$con=true:$con=false;
+        return view("login",["con"=>$con]);
     }
     public function login_fun(Request $request){
         $request->validate([
-            'name' => 'required',
-            'password' => 'required',
+            'name' => 'required|string',
+            'password' => 'required|string',
         ]);
 
         if(Auth::attempt(["name"=>$request->name,"password"=>$request->password])){
@@ -25,6 +30,24 @@ class mainController extends Controller
             return redirect()->back()->with("error","خطأ في اسم المستخدم او الرقم السري");
         }
     }
+    public function register_view(){
+        return view("register");
+    }
+    public function register_fun(Request $request){
+        $request->validate([
+            'name' => 'required|string|unique:users,name',
+            'password' => 'required|string',
+        ]);
+
+        $user=new User();
+        $user->name=$request->name;
+        $user->password=Hash::make($request->password);
+        $user->save();
+            return to_route("login_view");
+
+    }
+
+
 
 
     public function categories(){
@@ -103,7 +126,7 @@ class mainController extends Controller
         $product->selling_customer_piece_price = $request->selling_customer_piece_price;
         $product->save(); 
     
-        return redirect()->route('products_view')
+        return redirect()->back()
         ->with('message', 'تم إضافة المنتج بنجاح')
         ->withInput();   
     }

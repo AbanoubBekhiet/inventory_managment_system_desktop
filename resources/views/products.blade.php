@@ -7,8 +7,8 @@
     <title>Document</title>
     <link href="{{ asset('all.min.css') }}" rel="stylesheet">
     <link href="{{ asset('CSS/products.css') }}" rel="stylesheet">
-    {{-- @vite(['resources/js/app.js', 'resources/js/products.js']) --}}
-    {{-- <script src="{{ asset('jquery.min.js')  }}"></script> --}}
+    <script src="{{ asset('jquery.min.js')  }}"></script>
+    @vite(['resources/js/app.js', 'resources/js/products.js'])
 
 
 
@@ -104,11 +104,11 @@
                 @csrf
                 <div>
                     <label for="product_name">اسم منتج</label>
-                    <input id="input_product_name" type="text" name="product_name" value="{{old('product_name')}}">
+                    <input id="input_product_name" type="text" name="product_name" >
                 </div>
                 <div>
                     <label for="product_category">اختر فئة المنتج</label>
-                    <select id="input_product_category" name="category" id="category" value="{{old('category_name')}}">
+                    <select id="input_product_category" name="category" id="category" >
                         @foreach ($categories as $categorie)
                         <option value="{{$categorie->id}}">{{$categorie->name}}</option>
                         @endforeach
@@ -116,31 +116,31 @@
                 </div>
                 <div>
                     <label for="number_of_pieces">ادخل عدد القطع في العلبة</label>
-                    <input id="input_number_of_pieces" type="number" name="number_of_pieces" id="number_of_pieces" value="{{old('number_of_pieces')}}" >
+                    <input id="input_number_of_pieces" type="number" name="number_of_pieces" id="number_of_pieces"  >
                 </div>
                 <div>
                     <label for="original_price">ادخل سعر الاستلام</label>
-                    <input id="input_original_price" type="text" name="original_price" id="original_price" value="{{old('original_price')}}">
+                    <input id="input_original_price" type="text" name="original_price" id="original_price" >
                 </div>
                 <div>
                     <label for="packet_selling_price">ادخل سعر بيع الكرتونة</label>
-                    <input id="input_packet_selling_price" type="number" name="packet_selling_price" id="packet_selling_price" value="{{old('packet_selling_price')}}">
+                    <input id="input_packet_selling_price" type="number" name="packet_selling_price" id="packet_selling_price" >
                 </div>
                 <div>
                     <label for="piece_selling_price">ادخل سعر بيع القطعة</label>
-                    <input id="input_piece_selling_price" type="number" name="piece_selling_price" id="piece_selling_price" value="{{old('piece_selling_price')}}">
+                    <input id="input_piece_selling_price" type="number" name="piece_selling_price" id="piece_selling_price" >
                 </div>
                 <div style="margin-bottom:60px;">
                     <label for="number_of_exciting_packets">ادخل عدد القطع الموفرة </label>
-                    <input id="input_number_of_exciting_packets" type="number" name="number_of_exciting_packets" id="number_of_exciting_packets" value="{{old('number_of_exciting_packets')}}">
+                    <input id="input_number_of_exciting_packets" type="number" name="number_of_exciting_packets" id="number_of_exciting_packets" >
                 </div>
                 <div style="margin-bottom:60px;">
                     <label for="existing_number_of_pieces">ادخل عدد الكراتين الموفرة </label>
-                    <input id="existing_number_of_pieces" type="number" name="existing_number_of_pieces" id="existing_number_of_pieces" value="{{old('existing_number_of_pieces')}}">
+                    <input id="existing_number_of_pieces" type="number" name="existing_number_of_pieces" id="existing_number_of_pieces" >
                 </div>
                 <div style="margin-bottom:60px;">
                     <label for="selling_customer_piece_price">ادخل سعر بيع القطعة للمستهلك   </label>
-                    <input id="selling_customer_piece_price" type="number" name="selling_customer_piece_price" id="selling_customer_piece_price" value="{{old('selling_customer_piece_price')}}">
+                    <input id="selling_customer_piece_price" type="number" name="selling_customer_piece_price" id="selling_customer_piece_price" >
                 </div>
                 <div id="accept_pieces_div">
                     <label>هل المنتج يقبل التجزأة</label>
@@ -160,8 +160,7 @@
     let products = @json($products);
 </script>
     <script src="{{ asset('sweetalert2.all.min.js') }}"></script>
-    <script src="{{ asset('jquery.min.js')  }}"></script>
-    <script src="{{ asset('js/products.js')  }}"></script>
+
 </body>
 </html>
 

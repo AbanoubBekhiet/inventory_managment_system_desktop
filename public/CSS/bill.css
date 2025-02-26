@@ -26,39 +26,36 @@ body{
 
 
 table {
-    width: 80%; 
+    width: 100%; 
     border-collapse: collapse;
     position:relative;
     border-radius:10px;
-    margin:auto;
     margin-top:30px;
     color:#000;
 }
 table tr td {
-    padding-inline:15px;
-    padding-block:4px;
-    font-size: 13px;
+    font-size: 16px;
     text-align:start;
     border:1px solid #000;
     width:fit-content;
-
+    white-space: nowrap
 }
 table tr td:not(table tr td:first-child) {
     padding-right:5px;
     text-align: start;
 }
-table tr td:first-child {
-   text-align: right;
-}
+
 table thead th {
-padding-inline: 15px;
-padding-block: 10px;
 color: #000;
-font-size: 13px;
+font-size: 16px;
 text-align: start;
 border-bottom: 2px solid #000; 
 border:1px solid #000;
 width:fit-content;
+}
+
+.content{
+    padding-bottom:200px;
 }
 
 button{
@@ -102,65 +99,14 @@ color:#6c7a89;
     font-size:23px;
 }
 
+
+
 @media print {
-    body {
-        font-size: 14px;
-        color: black;
-    }
-    .body .content table {
-        width: 100%; 
-        border-collapse: collapse;
-        position:relative;
-        border-radius:10px;
-        margin:auto;
-        margin-top:30px;
-    }
-    .body .content table tr td {
-        padding-inline:15px;
-        padding-block:4px;
-        color:#000;
-        font-size:20px;
-        text-align:center;
-        border:1px solid #000;
-    }
-    table {
-        width: 80%; 
-        border-collapse: collapse;
-        position:relative;
-        border-radius:10px;
-        margin:auto;
-        margin-top:30px;
-    }
-    table tr td {
-        padding-inline:15px;
-        padding-block:4px;
-        color:#000;
-        font-size: 13px;
-        text-align:start;
-        border:1px solid #000;
-    }
-    table tr td:not(table tr td:first-child) {
-        padding-right:15px;
-        text-align: start;
-    }
-    table tr td:first-child {
-       text-align: right;
-    }
-    table thead th {
-    padding-inline: 5px;
-    padding-block: 10px;
-    color: #000;
-    font-size: 13px;
-    text-align: start;
-    border-bottom: 2px solid #000; 
-    border:1px solid #000;
-    
-    }
-    body{
-        border:2px solid #000;
-    }
     
     .no-print {
         display: none;
+    }
+    .content{
+        padding-bottom:10px;
     }
 }

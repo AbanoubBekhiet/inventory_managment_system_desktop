@@ -88,6 +88,7 @@ border-bottom: 2px solid #fff;
     position:relative;
     background-color:#fff;
     width:60%;
+    max-height:700px;
     border-radius:5px;
     display:flex;
     justify-content:center ;

@@ -7,7 +7,6 @@
     <title>Document</title>
     <link href="{{ asset('all.min.css') }}" rel="stylesheet">
     <link href="{{ asset('CSS/customer_purchases.css') }}" rel="stylesheet">
-    {{-- @vite(['resources/js/app.js', 'resources/js/customers.js']) --}}
 
 
 
@@ -55,6 +54,7 @@
                             <th>رقم الهاتف</th>
                             <th>قيمة الفاتورة الاجمالية</th>
                             <th>التاريخ</th>
+                            <th>مكسب الفاتورة</th>
                             <th>العمليات</th>
                         </tr>
                     </thead>
@@ -65,6 +65,7 @@
                                 <td>{{$bill->phone_number}}</td>
                                 <td>{{$bill->total_price}}</td>
                                 <td>{{$bill->created_at}}</td>
+                                <td><a href="{{route("bill_binefits",$bill->id)}}">عرض مكسب الفاتورة</a></td>
                                 <td><a href={{route("show_specific_bill",$bill->id)}}>عرض الفاتورة</a></td>
                             </tr>
                         @endforeach

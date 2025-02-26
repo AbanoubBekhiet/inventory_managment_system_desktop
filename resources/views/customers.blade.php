@@ -7,8 +7,8 @@
     <title>Document</title>
     <link href="{{ asset('all.min.css') }}" rel="stylesheet">
     <link href="{{ asset('CSS/customers.css') }}" rel="stylesheet">
-    {{-- @vite(['resources/js/app.js', 'resources/js/customers.js']) --}}
-
+    <script src="{{ asset('jquery.min.js') }}"></script>
+    @vite(['resources/js/app.js', 'resources/js/customers.js'])
 
 
 
@@ -104,9 +104,8 @@
     <script >
         let customers = @json($customers);
     </script>
-    <script src="{{ asset('jquery.min.js') }}"></script>
+
     <script src="{{ asset('sweetalert2.all.min.js') }}"></script>
-    <script src="{{ asset('js/customers.js') }}"></script>
             
 </body>
 </html>

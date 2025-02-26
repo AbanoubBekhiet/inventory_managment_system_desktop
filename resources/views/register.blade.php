@@ -14,8 +14,8 @@
     padding:30px;display:flex;flex-direction:column;align-items:center;background-color:#a3c6c4">
         <div style="padding:30px;background-color:#354649;padding:50px;border-radius:5px;
         font-size:25px;color:#a3c6c4;">
-           <p style="text-align:center;text-decoration:underline">تسجيل دخول</p>
-            <form action="{{route('login_fun')}}" method="post" >
+           <p style="text-align:center;text-decoration:underline"> تسجيل حساب جديد</p>
+            <form action="{{route('register_fun')}}" method="post" >
                 @csrf
                 <label for="name">اسم المستخدم</label>
                 <input type="text" name="name" id="name">
@@ -23,19 +23,15 @@
                 <input type="password" name="password" id="password">
                 <input type="submit" value="تسجيل دخول">
             </form>
-@if ($con)
-<a  href="{{route('register_view')}}">تسجيل حساب جديد</a>
-@endif
+
             @if(session()->has('error'))
                 <div style="position: absolute; padding: 20px; background-color: tomato; right:80px; top: 6%;color:#fff">
                     {{ session('error') }}
                 </div>
             @endif
+            
         </div>
     </div>
-
-
-
 </body>
 </html>
 
@@ -46,10 +42,10 @@
         align-items:flex-end;
         justify-content:space-between;
         background-color:#6c7a89;
-        padding:20px;
+        padding:30px;
         border-radius:5px;
         color:#fff;
-        margin-top:10px;
+        margin-top:50px;
         font-size:22px;
     }
     form input[type='text'],form input[type='password']{
@@ -65,9 +61,5 @@
         position:relative;
         left:50%;
         transform:translateX(-50%);
-    }
-    a{
-        color:white;
-        text-decoration: none;
     }
 </style>

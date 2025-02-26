@@ -10,6 +10,9 @@ use App\Http\Controllers\customersController;
 Route::get('/', [mainController::class, "login_view"])->name("login_view");
 Route::post('/login', [mainController::class, "login_fun"])->name("login_fun");
 
+Route::get('/register', [mainController::class, "register_view"])->name("register_view");
+Route::post('/register_fun', [mainController::class, "register_fun"])->name("register_fun");
+
 
 
 Route::get('/categories', [mainController::class, "categories"])->name("categories");
