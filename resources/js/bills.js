@@ -451,7 +451,6 @@ submit_button.on("click", function(e) {
                 number_of_pieces: pieceQty,
                 total: parseFloat($tr.find("td").eq(5).text()) 
             });
-            $(e.target).prop('disabled', true);
 
         });
     } catch (e) {
@@ -482,6 +481,7 @@ submit_button.on("click", function(e) {
             error: function(xhr) {
             }
         });
+        $(e.target).prop('disabled', true);
     } else {
         error_p.text("الرجاء مراجعة كميات المنتجات").fadeIn(1000).fadeOut();
     }

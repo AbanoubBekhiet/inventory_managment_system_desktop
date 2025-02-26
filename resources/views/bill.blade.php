@@ -74,13 +74,13 @@
                @foreach ($products as $product =>$index)
                    <tr>
                         <td>{{$product+1}}</td>
-                        <td >{{$index->name}} ---- {{$index->n_pieces_in_packet}} ق</td>
-                        <td>{{$index->number_of_packets}} ك </td>
-                        <td>{{$index->packet_price}}  ج</td>
-                        <td>{{$index->number_of_pieces}}  ق</td>
-                        <td>{{$index->piece_price}}  ج</td>
-                        <td style="width:15px">@php $index->selling_customer_piece_price ?? ""  @endphp</td>
-                        <td>{{$index->total_product_price}}  ج</td>
+                        <td >{{$index->name}} ---- {{$index->n_pieces_in_packet}} </td>
+                        <td>{{$index->number_of_packets}}  </td>
+                        <td>{{$index->packet_price}}  </td>
+                        <td>{{$index->number_of_pieces}}  </td>
+                        <td>{{$index->piece_price}}  </td>
+                        <td style="width:15px">@php $index->selling_customer_piece_price==null?"":$index->selling_customer_piece_price  @endphp</td>
+                        <td>{{$index->total_product_price}}  </td>
                    </tr>
                @endforeach
             </tbody>  
