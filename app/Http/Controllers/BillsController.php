@@ -79,6 +79,7 @@ class BillsController extends Controller
             ->select('customers.*', 'bills.*', 'product_bill_relations.*','products.name','products.n_pieces_in_packet','products.selling_customer_piece_price')
             ->where("bills.id","=",$bill_id)
             ->get();
+            // dd($products);
         return view("bill",["products"=>$products]);
     }
 

@@ -120,8 +120,8 @@ class mainController extends Controller
         $product->original_packet_price = $request->original_price;
         $product->selling_packet_price = $request->packet_selling_price;
         $product->piece_price = $request->piece_selling_price;
-        $product->exicting_number_of_pieces = $request->number_of_exciting_packets;
-        $product->existing_number_of_pieces = $request->existing_number_of_pieces;
+        $product->exicting_number_of_pieces = $request->existing_number_of_pieces;
+        $product->existing_number_of_pieces = $request->number_of_exciting_packets;
         $product->accept_pieces = $request->accept_pieces;
         $product->selling_customer_piece_price = $request->selling_customer_piece_price;
         $product->save(); 

@@ -22,6 +22,7 @@
         });
     
         $addProduct.on("click", function () {
+            $(".add_product_main").css("height", $(document).height() + "px");
             showForm();
         });
 
