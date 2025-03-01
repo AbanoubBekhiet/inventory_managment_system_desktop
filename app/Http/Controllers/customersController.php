@@ -104,9 +104,15 @@ class customersController extends Controller
     
 
     public function delete_customer($customer_id){
-        $customer= Customer::find($customer_id);
-        $customer->delete();    
-        return redirect()->back()->with("message","تم حذف العميل بنجاح");
+        $num_of_bills=Bill::where("cus_id","=",$customer_id)->first();
+        if($num_of_bills){
+            return redirect()->back()->with("message"," العميل لديه فواتير لايمكن حذفه");
+        }
+        else{
+            $customer= Customer::findOrFail($customer_id);
+            $customer->delete();    
+            return redirect()->back()->with("message","تم حذف العميل بنجاح");
+        }
     }
 
 

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Category;
+use App\Models\ProductBillRelation;
 use App\Models\User;
 use App\Models\Product;
 class mainController extends Controller
@@ -131,10 +132,21 @@ class mainController extends Controller
         ->withInput();   
     }
 
-    public function delete_product($product_id){
-        $product= Product::find($product_id);
-        $product->delete();    
-        return redirect()->back()->with("message","المنتج اتحذفت بنجاح");
+    public function delete_product($product_id)
+    {
+        if (ProductBillRelation::where('product_id', $product_id)->exists()) {
+            return redirect()->back()->with("message", "لا يمكن حذف المنتج لأنه موجود في فاتورة");
+        }
+    
+        $product = Product::find($product_id);
+    
+        if (!$product) {
+            return redirect()->back()->with("message", "المنتج غير موجود");
+        }
+    
+        $product->delete();
+        
+        return redirect()->back()->with("message", "المنتج تم حذفه بنجاح");
     }
     
 

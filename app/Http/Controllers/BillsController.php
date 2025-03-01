@@ -79,14 +79,13 @@ class BillsController extends Controller
             ->select('customers.*', 'bills.*', 'product_bill_relations.*','products.name','products.n_pieces_in_packet','products.selling_customer_piece_price')
             ->where("bills.id","=",$bill_id)
             ->get();
-            // dd($products);
         return view("bill",["products"=>$products]);
     }
 
 
     public function statistics(){
         $total_number_of_money_based_on_original_price = DB::table("products")
-        ->sum(DB::raw("(original_packet_price * exicting_number_of_pieces) + (piece_price * existing_number_of_pieces)"));
+        ->sum(DB::raw("(original_packet_price * exicting_number_of_pieces) + ((original_packet_price/n_pieces_in_packet) * existing_number_of_pieces)"));
     
         $total_number_of_money_based_on_selling_price = DB::table("products")
         ->sum(DB::raw("(selling_packet_price * exicting_number_of_pieces) + (piece_price * existing_number_of_pieces)"));
@@ -122,17 +121,17 @@ class BillsController extends Controller
 
 
         $total_benefits_this_month = DB::table('bills')
-        ->join('product_bill_relations', 'bills.id', '=', 'product_bill_relations.bill_id')
-        ->join('products', 'product_bill_relations.product_id', '=', 'products.id')
-        ->select(
-            DB::raw('SUM(bills.total_price) AS total_sales'),
-            DB::raw('SUM(product_bill_relations.number_of_packets * products.original_packet_price) AS total_packet_original_price'),
-            DB::raw('SUM(product_bill_relations.number_of_pieces * (products.original_packet_price / products.n_pieces_in_packet)) AS total_piece_original_price')
-        )
-        ->whereMonth('bills.created_at', Carbon::now()->month)
-        ->whereYear('bills.created_at', Carbon::now()->year)
-        ->first();
-        
+    ->join('product_bill_relations', 'bills.id', '=', 'product_bill_relations.bill_id')
+    ->join('products', 'product_bill_relations.product_id', '=', 'products.id')
+    ->select(
+        DB::raw('SUM(DISTINCT bills.total_price) AS total_sales'),
+        DB::raw('SUM(product_bill_relations.number_of_packets * products.original_packet_price) AS total_packet_original_price'),
+        DB::raw('SUM(product_bill_relations.number_of_pieces * (products.original_packet_price / products.n_pieces_in_packet)) AS total_piece_original_price')
+    )
+    ->whereMonth('bills.created_at', Carbon::now()->month)
+    ->whereYear('bills.created_at', Carbon::now()->year)
+    ->first();
+
         $total_benefits_this_month_number=number_format($total_benefits_this_month->total_sales-($total_benefits_this_month->total_packet_original_price+$total_benefits_this_month->total_piece_original_price),2);
        
        
@@ -140,7 +139,7 @@ class BillsController extends Controller
         ->join('product_bill_relations', 'bills.id', '=', 'product_bill_relations.bill_id')
         ->join('products', 'product_bill_relations.product_id', '=', 'products.id')
         ->select(
-            DB::raw('SUM(bills.total_price) AS total_sales'),
+            DB::raw('SUM(DISTINCT bills.total_price) AS total_sales'),
             DB::raw('SUM(product_bill_relations.number_of_packets * products.original_packet_price) AS total_packet_original_price'),
             DB::raw('SUM(product_bill_relations.number_of_pieces * (products.original_packet_price / products.n_pieces_in_packet)) AS total_piece_original_price')
         )
@@ -163,7 +162,7 @@ class BillsController extends Controller
         ->join('product_bill_relations', 'bills.id', '=', 'product_bill_relations.bill_id')
         ->join('products', 'product_bill_relations.product_id', '=', 'products.id')
         ->select(
-            DB::raw('SUM(bills.total_price) AS total_sales'),
+            DB::raw('SUM(DISTINCT bills.total_price) AS total_sales'),
             DB::raw('SUM(product_bill_relations.number_of_packets * products.original_packet_price) AS total_packet_original_price'),
             DB::raw('SUM(product_bill_relations.number_of_pieces * (products.original_packet_price / products.n_pieces_in_packet)) AS total_piece_original_price')
         )
@@ -180,7 +179,7 @@ class BillsController extends Controller
         ->join('product_bill_relations', 'bills.id', '=', 'product_bill_relations.bill_id')
         ->join('products', 'product_bill_relations.product_id', '=', 'products.id')
         ->select(
-            DB::raw('SUM(bills.total_price) AS total_sales'),
+            DB::raw('SUM(DISTINCT bills.total_price) AS total_sales'),
             DB::raw('SUM(product_bill_relations.number_of_packets * products.original_packet_price) AS total_packet_original_price'),
             DB::raw('SUM(product_bill_relations.number_of_pieces * (products.original_packet_price / products.n_pieces_in_packet)) AS total_piece_original_price')
         )
@@ -204,7 +203,7 @@ class BillsController extends Controller
         ->join('product_bill_relations', 'bills.id', '=', 'product_bill_relations.bill_id')
         ->join('products', 'product_bill_relations.product_id', '=', 'products.id')
         ->select(
-            DB::raw('SUM(bills.total_price) AS total_sales'),
+            DB::raw('SUM(DISTINCT bills.total_price) AS total_sales'),
             DB::raw('SUM(product_bill_relations.number_of_packets * products.original_packet_price) AS total_packet_original_price'),
             DB::raw('SUM(product_bill_relations.number_of_pieces * (products.original_packet_price / products.n_pieces_in_packet)) AS total_piece_original_price')
         )
@@ -241,7 +240,7 @@ class BillsController extends Controller
         ->join('product_bill_relations', 'bills.id', '=', 'product_bill_relations.bill_id')
         ->join('products', 'product_bill_relations.product_id', '=', 'products.id')
         ->select(
-            DB::raw('SUM(bills.total_price) AS total_sales'),
+            DB::raw('SUM(DISTINCT bills.total_price) AS total_sales'),
             DB::raw('SUM(product_bill_relations.number_of_packets * products.original_packet_price) AS total_packet_original_price'),
             DB::raw('SUM(product_bill_relations.number_of_pieces * (products.original_packet_price / products.n_pieces_in_packet)) AS total_piece_original_price')
         )
