@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('product_bill_relation', function (Blueprint $table) {
+        Schema::table('product_bill_relations', function (Blueprint $table) {
             $table->float("piece_price");
             $table->float("packet_price");
         });

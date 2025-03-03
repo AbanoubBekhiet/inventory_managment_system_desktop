@@ -10,7 +10,7 @@ class ProductBillRelation extends Model
     protected $primaryKey = ['product_id', 'bill_id'];
 
     protected $fillable = [
-        'product_id', 'bill_id', 'number_of_packets', 'number_of_pieces', 'total_product_price','packet_price','piece_price'
+        'product_id', 'bill_id', 'number_of_packets', 'number_of_pieces', 'total_product_price','packet_price','piece_price','original_peice_price','original_packet_price'
     ];
     public function product()
     {

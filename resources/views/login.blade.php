@@ -14,7 +14,7 @@
     padding:30px;display:flex;flex-direction:column;align-items:center;background-color:#a3c6c4">
         <div style="padding:30px;background-color:#354649;padding:50px;border-radius:5px;
         font-size:25px;color:#a3c6c4;">
-           <p style="text-align:center;text-decoration:underline">تسجيل دخول</p>
+        <p style="text-align:center;text-decoration:underline">تسجيل دخول</p>
             <form action="{{route('login_fun')}}" method="post" >
                 @csrf
                 <label for="name">اسم المستخدم</label>

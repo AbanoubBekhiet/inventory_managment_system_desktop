@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-            Schema::rename('product_bill_relation', 'product_bill_relations');
-        
-    }
+        Schema::table('product_bill_relations', function (Blueprint $table) {
+            $table->float('original_packet_price')->nullable(); 
+            $table->float('original_peice_price')->nullable();
+        });   
+     }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-            Schema::rename('product_bill_relations', 'product_bill_relation');
-
-   
+        //
     }
 };

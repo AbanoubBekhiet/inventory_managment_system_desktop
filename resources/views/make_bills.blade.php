@@ -83,7 +83,7 @@
                     </tbody>
                 </table>
             </div>
-               
+            
 
             <div class="total_price"><span>إجمالي الفاتورة :</span> <span>0</span></div>
 

@@ -35,7 +35,7 @@ class BillsController extends Controller
                     $pro->exicting_number_of_pieces--;
                 }
                 $pro->existing_number_of_pieces -= $product['number_of_pieces'];
-                $pro->save();
+                $original_piece_price=number_format($pro->original_packet_price/$pro->n_pieces_in_packet,2);
                 ProductBillRelation::create([
                     'product_id' => $product['id'],
                     'bill_id' => $bill->id,
@@ -43,9 +43,12 @@ class BillsController extends Controller
                     'number_of_pieces' => $product["number_of_pieces"],
                     'packet_price' => $product["selling_packet_price"],
                     'piece_price' => $product["selling_piece_price"],
+                    'original_packet_price' => $pro->original_packet_price,
+                    'original_peice_price' => $original_piece_price,
                     'total_product_price' => $product["total"]
-
                 ]);
+                $pro->save();
+
         }
         
 
@@ -115,103 +118,90 @@ class BillsController extends Controller
                 ->sum('total_price')
         );
 
+/////////////////////////////////////////////////////////////////////
 
 
-
-
-
-        $total_benefits_this_month = DB::table('bills')
-    ->join('product_bill_relations', 'bills.id', '=', 'product_bill_relations.bill_id')
-    ->join('products', 'product_bill_relations.product_id', '=', 'products.id')
-    ->select(
-        DB::raw('SUM(DISTINCT bills.total_price) AS total_sales'),
-        DB::raw('SUM(product_bill_relations.number_of_packets * products.original_packet_price) AS total_packet_original_price'),
-        DB::raw('SUM(product_bill_relations.number_of_pieces * (products.original_packet_price / products.n_pieces_in_packet)) AS total_piece_original_price')
-    )
-    ->whereMonth('bills.created_at', Carbon::now()->month)
-    ->whereYear('bills.created_at', Carbon::now()->year)
-    ->first();
-
-        $total_benefits_this_month_number=number_format($total_benefits_this_month->total_sales-($total_benefits_this_month->total_packet_original_price+$total_benefits_this_month->total_piece_original_price),2);
-       
-       
-        $total_benefits_this_year = DB::table('bills')
-        ->join('product_bill_relations', 'bills.id', '=', 'product_bill_relations.bill_id')
-        ->join('products', 'product_bill_relations.product_id', '=', 'products.id')
-        ->select(
-            DB::raw('SUM(DISTINCT bills.total_price) AS total_sales'),
-            DB::raw('SUM(product_bill_relations.number_of_packets * products.original_packet_price) AS total_packet_original_price'),
-            DB::raw('SUM(product_bill_relations.number_of_pieces * (products.original_packet_price / products.n_pieces_in_packet)) AS total_piece_original_price')
-        )
-        ->whereYear('bills.created_at', Carbon::now()->year)
-        ->first();
-        $total_benefits_this_year_number=number_format($total_benefits_this_year->total_sales-($total_benefits_this_year->total_packet_original_price+$total_benefits_this_year->total_piece_original_price),2);
-
-
-
-
-
-
-
-
-
-
-
-
-        $total_benefits_last_month = DB::table('bills')
-        ->join('product_bill_relations', 'bills.id', '=', 'product_bill_relations.bill_id')
-        ->join('products', 'product_bill_relations.product_id', '=', 'products.id')
-        ->select(
-            DB::raw('SUM(DISTINCT bills.total_price) AS total_sales'),
-            DB::raw('SUM(product_bill_relations.number_of_packets * products.original_packet_price) AS total_packet_original_price'),
-            DB::raw('SUM(product_bill_relations.number_of_pieces * (products.original_packet_price / products.n_pieces_in_packet)) AS total_piece_original_price')
-        )
-        ->whereMonth('bills.created_at', Carbon::now()->month==1?12:Carbon::now()->month-1)
-        ->whereYear('bills.created_at', Carbon::now()->month==1?Carbon::now()->year-1:Carbon::now()->year)
-        ->first();
+        $total_benefits_specific_bill = ProductBillRelation::query()
+        ->selectRaw('
+            SUM(
+                total_product_price - 
+                (COALESCE(number_of_packets, 0) * COALESCE(original_packet_price, 0) + 
+                 COALESCE(number_of_pieces, 0) * COALESCE(original_peice_price, 0))
+            ) AS total_benefit
+        ')
+        ->whereMonth('created_at', Carbon::now()->month)
+        ->whereYear('created_at', Carbon::now()->year)
+        ->value('total_benefit');
         
-        $total_benefits_last_month_number=number_format($total_benefits_last_month->total_sales-($total_benefits_last_month->total_packet_original_price+$total_benefits_last_month->total_piece_original_price),2);
+
+        $total_benefits_this_month_number=number_format($total_benefits_specific_bill,2);
+
+/////////////////////////////////////////////////////////////////////
+
+        $total_benefits_this_year = ProductBillRelation::query()
+        ->selectRaw('
+            SUM(
+                total_product_price - 
+                (COALESCE(number_of_packets, 0) * COALESCE(original_packet_price, 0) + 
+                 COALESCE(number_of_pieces, 0) * COALESCE(original_peice_price, 0))
+            ) AS total_benefit
+        ')
+        ->whereYear('created_at', Carbon::now()->year)
+        ->value('total_benefit');
         
+
+        $total_benefits_this_year_number=number_format($total_benefits_this_year,2);
+
+/////////////////////////////////////////////////////////////////////
+        $total_benefits_last_month = ProductBillRelation::query()
+        ->selectRaw('
+            SUM(
+                total_product_price - 
+                (COALESCE(number_of_packets, 0) * COALESCE(original_packet_price, 0) + 
+                 COALESCE(number_of_pieces, 0) * COALESCE(original_peice_price, 0))
+            ) AS total_benefit
+        ')
+        ->whereYear('created_at', Carbon::now()->year)->whereMonth('created_at', Carbon::now()->month==1?12:Carbon::now()->month-1)
+        ->whereYear('created_at', Carbon::now()->month==1?Carbon::now()->year-1:Carbon::now()->year)
+        ->value('total_benefit');
         
+
+        $total_benefits_last_month_number=number_format($total_benefits_last_month,2);
+        /////////////////////////////////////////////////////////////////////        
         
+        $total_benefits_last_year = ProductBillRelation::query()
+        ->selectRaw('
+            SUM(
+                total_product_price - 
+                (COALESCE(number_of_packets, 0) * COALESCE(original_packet_price, 0) + 
+                 COALESCE(number_of_pieces, 0) * COALESCE(original_peice_price, 0))
+            ) AS total_benefit
+        ')
+        ->whereYear('created_at', Carbon::now()->year-1)
+        ->value('total_benefit');
         
-        $total_benefits_last_year = DB::table('bills')
-        ->join('product_bill_relations', 'bills.id', '=', 'product_bill_relations.bill_id')
-        ->join('products', 'product_bill_relations.product_id', '=', 'products.id')
-        ->select(
-            DB::raw('SUM(DISTINCT bills.total_price) AS total_sales'),
-            DB::raw('SUM(product_bill_relations.number_of_packets * products.original_packet_price) AS total_packet_original_price'),
-            DB::raw('SUM(product_bill_relations.number_of_pieces * (products.original_packet_price / products.n_pieces_in_packet)) AS total_piece_original_price')
-        )
-        ->whereYear('bills.created_at', Carbon::now()->year-1)
-        ->first();
-        $total_benefits_last_year_number=number_format($total_benefits_last_year->total_sales-($total_benefits_last_year->total_packet_original_price+$total_benefits_last_year->total_piece_original_price),2);
 
+        $total_benefits_last_year_number=number_format($total_benefits_last_year,2);
+    
 
+        /////////////////////////////////////////////////////////////////////
 
-
-
-
-
-
-
-
-
-
-
-        $total_benefits_today = DB::table('bills')
-        ->join('product_bill_relations', 'bills.id', '=', 'product_bill_relations.bill_id')
-        ->join('products', 'product_bill_relations.product_id', '=', 'products.id')
-        ->select(
-            DB::raw('SUM(DISTINCT bills.total_price) AS total_sales'),
-            DB::raw('SUM(product_bill_relations.number_of_packets * products.original_packet_price) AS total_packet_original_price'),
-            DB::raw('SUM(product_bill_relations.number_of_pieces * (products.original_packet_price / products.n_pieces_in_packet)) AS total_piece_original_price')
-        )
-        ->whereDay('bills.created_at', Carbon::now()->day)
-        ->first();
+        $total_benefits_today = ProductBillRelation::query()
+        ->selectRaw('
+            SUM(
+                total_product_price - 
+                (COALESCE(number_of_packets, 0) * COALESCE(original_packet_price, 0) + 
+                 COALESCE(number_of_pieces, 0) * COALESCE(original_peice_price, 0))
+            ) AS total_benefit
+        ')
+        ->whereDay('created_at', Carbon::now()->day)
+        ->value('total_benefit');
         
-        $total_benefits_today_number=number_format($total_benefits_today->total_sales-($total_benefits_today->total_packet_original_price+$total_benefits_today->total_piece_original_price),2);
-       
+
+        $total_benefits_today_number=number_format($total_benefits_today,2);
+
+
+        /////////////////////////////////////////////////////////////////////       
 
         return view("statistics",
         [
@@ -236,20 +226,23 @@ class BillsController extends Controller
 
 
     public function bill_binefits($bill_id){
-        $total_benefits_specific_bill = DB::table('bills')
-        ->join('product_bill_relations', 'bills.id', '=', 'product_bill_relations.bill_id')
-        ->join('products', 'product_bill_relations.product_id', '=', 'products.id')
-        ->select(
-            DB::raw('SUM(DISTINCT bills.total_price) AS total_sales'),
-            DB::raw('SUM(product_bill_relations.number_of_packets * products.original_packet_price) AS total_packet_original_price'),
-            DB::raw('SUM(product_bill_relations.number_of_pieces * (products.original_packet_price / products.n_pieces_in_packet)) AS total_piece_original_price')
+        $total_benefits_specific_bill = DB::table('product_bill_relations')
+        ->join('bills', 'product_bill_relations.bill_id', '=', 'bills.id')
+        ->select('product_bill_relations.number_of_packets'
+        ,'product_bill_relations.number_of_pieces'
+        ,'product_bill_relations.original_packet_price'
+        ,'product_bill_relations.original_peice_price'
+        ,'bills.total_price'
         )
         ->where("bills.id","=",$bill_id)
-        ->first();
-
-        $total_benefits_specific_bill_number=number_format($total_benefits_specific_bill->total_sales-($total_benefits_specific_bill->total_packet_original_price+$total_benefits_specific_bill->total_piece_original_price),2);
-
-
+        ->get();
+        
+        $total_products_price=0;
+        foreach($total_benefits_specific_bill as $index){
+            $total_products_price+=($index->number_of_packets*$index->original_packet_price+$index->number_of_pieces*$index->original_peice_price);
+        }
+        $total_benefits_specific_bill_number=number_format(($total_benefits_specific_bill[0]->total_price)-$total_products_price,2);
         return view("bill_benifit",["total_benefits_specific_bill"=>$total_benefits_specific_bill_number]);
     }
+
 }
