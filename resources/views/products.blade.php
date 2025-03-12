@@ -52,7 +52,7 @@
                 <input id="addProduct" type="button" value="إضافة منتج" style="padding:10px;font-size:20px;background-color:#6c7a89;border:0px;color:#fff;border-radius:5px;">
             </div>
                 
-            <table>
+            <table id="products">
                 <thead>
                     <tr>
                         <th>رقم المنتج </th>
@@ -116,31 +116,31 @@
                 </div>
                 <div>
                     <label for="number_of_pieces">ادخل عدد القطع في العلبة</label>
-                    <input id="input_number_of_pieces" type="number" name="number_of_pieces" id="number_of_pieces"  >
+                    <input id="input_number_of_pieces"  step="any" type="number" name="number_of_pieces" id="number_of_pieces"  >
                 </div>
                 <div>
                     <label for="original_price">ادخل سعر الاستلام</label>
-                    <input id="input_original_price" type="text" name="original_price" id="original_price" >
+                    <input id="input_original_price"  step="any" type="text" name="original_price" id="original_price" >
                 </div>
                 <div>
                     <label for="packet_selling_price">ادخل سعر بيع الكرتونة</label>
-                    <input id="input_packet_selling_price" type="number" name="packet_selling_price" id="packet_selling_price" >
+                    <input id="input_packet_selling_price"  step="any" type="number" name="packet_selling_price" id="packet_selling_price" >
                 </div>
                 <div>
                     <label for="piece_selling_price">ادخل سعر بيع القطعة</label>
-                    <input id="input_piece_selling_price" type="number" name="piece_selling_price" id="piece_selling_price" >
+                    <input id="input_piece_selling_price"  step="any" type="number" name="piece_selling_price" id="piece_selling_price" >
                 </div>
                 <div style="margin-bottom:60px;">
                     <label for="number_of_exciting_packets">ادخل عدد القطع الموفرة </label>
-                    <input id="input_number_of_exciting_packets" type="number" name="number_of_exciting_packets" id="number_of_exciting_packets" >
+                    <input id="input_number_of_exciting_packets"  step="any" type="number" name="number_of_exciting_packets" id="number_of_exciting_packets" >
                 </div>
                 <div style="margin-bottom:60px;">
                     <label for="existing_number_of_pieces">ادخل عدد الكراتين الموفرة </label>
-                    <input id="existing_number_of_pieces" type="number" name="existing_number_of_pieces" id="existing_number_of_pieces" >
+                    <input id="existing_number_of_pieces"  step="any" type="number" name="existing_number_of_pieces" id="existing_number_of_pieces" >
                 </div>
                 <div style="margin-bottom:60px;">
                     <label for="selling_customer_piece_price">ادخل سعر بيع القطعة للمستهلك   </label>
-                    <input id="selling_customer_piece_price" type="number" name="selling_customer_piece_price" id="selling_customer_piece_price" >
+                    <input id="selling_customer_piece_price"  step="any" type="number" name="selling_customer_piece_price" id="selling_customer_piece_price" >
                 </div>
                 <div id="accept_pieces_div">
                     <label>هل المنتج يقبل التجزأة</label>

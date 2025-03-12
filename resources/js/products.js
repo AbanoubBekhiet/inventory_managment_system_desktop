@@ -145,7 +145,7 @@ document.querySelectorAll('.delete-form').forEach(form => {
 //////////////////////////update customer 
 
 $(function() {
-    $('.editable').on('click', function(e) {
+    $("#products").on('click','.editable', function(e) {
         var $li = $(this);
         var product_id = $li.data('id');
         var currentValue = $li.text();
@@ -178,7 +178,7 @@ $(function() {
             if (e.which === 13) { 
                 var newValue = $(this).val();
                 if (type !== "name") {
-                    newValue = parseInt(newValue);
+                    newValue = parseFloat(newValue);
                     if (isNaN(newValue)) {
                         $('#message-container')
                             .text('من فضلك ادخل قيمة رقمية')

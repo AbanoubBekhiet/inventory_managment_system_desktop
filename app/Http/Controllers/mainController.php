@@ -93,13 +93,13 @@ class mainController extends Controller
 
         $request->validate([
             "product_name" => "required|string|unique:products,name", 
-            "number_of_pieces" => "required|integer|min:1", 
+            "number_of_pieces" => "required|numeric|min:1", 
             "original_price" => "required|numeric|min:0",
             "packet_selling_price" => "required|numeric|min:0",
             "piece_selling_price" => "required|numeric|min:0",
-            "number_of_exciting_packets" => "required|integer|min:0",
-            "existing_number_of_pieces" => "required|integer|min:0",
-            "selling_customer_piece_price" => "integer|min:0",
+            "number_of_exciting_packets" => "required|numeric|min:0",
+            "existing_number_of_pieces" => "required|numeric|min:0",
+            "selling_customer_piece_price" => "numeric|min:0",
             "accept_pieces" => "required",
         ], [
             'required' => 'يجب ادخال الحقل',
@@ -220,13 +220,13 @@ class mainController extends Controller
     }
     public function add_quantity(Request $request,$product_id){
         $request->validate([
-            "packets_number"   => "numeric|min:0",
-            "number_of_pieces" => "nullable|numeric|min:0"
+            "packets_number"   => "integer|min:0",
+            "number_of_pieces" => "nullable|integer|min:0"
         ], [
-            "packets_number.numeric"  => "يجب إدخال قيمة عددية لعدد الكراتين.",
+            "packets_number.integer"  => "يجب إدخال قيمة عددية لعدد الكراتين.",
             "packets_number.min"      => "يجب إدخال عدد الكراتين كقيمة موجبة.",
         
-            "number_of_pieces.numeric" => "يجب إدخال قيمة عددية لعدد القطع.",
+            "number_of_pieces.integer" => "يجب إدخال قيمة عددية لعدد القطع.",
             "number_of_pieces.min"     => "يجب إدخال عدد القطع كقيمة موجبة."
         ]);
         
@@ -235,7 +235,7 @@ class mainController extends Controller
         $old_number_of_pieces=$product->existing_number_of_pieces;
 
 
-        if($request->packets_number){
+        if($request->number_of_pieces){
             $product->existing_number_of_pieces=$old_number_of_pieces+$request->number_of_pieces;
         }
         if($request->packets_number){
