@@ -243,3 +243,9 @@ input[type="radio"]:checked {
 #products-table-body td.editable {
     cursor: pointer;
 }
+
+#cat{
+    padding:4px;
+    font-size:20px;
+    border-radius:5px;
+}

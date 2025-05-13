@@ -39,6 +39,15 @@
         <div class="content">
             <div class="buttons_div">
                 <a href="{{route('exportProducts')}}"><button class="Export">إنشاء ملف إكسيل لل منتجات</button></a>
+                <div style="background-color:#6c7a89;padding:10px;border-radius:5px;color:#fff;">
+                    <label for="cat">اختر المنتجات بناءا علي الفئة</label>
+                <select name="cat" id="cat">
+                    @foreach ($categories as $cat)
+                    <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                    @endforeach
+                </select>
+                </div>
+                
                 <form action="{{ route('backup.database') }}" method="GET">
                     @csrf
                     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -115,11 +124,11 @@
                     </select>
                 </div>
                 <div>
-                    <label for="number_of_pieces">ادخل عدد القطع في العلبة</label>
+                    <label for="number_of_pieces">ادخل عدد القطع في الكرتونة</label>
                     <input id="input_number_of_pieces"  step="any" type="number" name="number_of_pieces" id="number_of_pieces"  >
                 </div>
                 <div>
-                    <label for="original_price">ادخل سعر الاستلام</label>
+                    <label for="original_price">ادخل سعر استلام الكرتونة</label>
                     <input id="input_original_price"  step="any" type="text" name="original_price" id="original_price" >
                 </div>
                 <div>

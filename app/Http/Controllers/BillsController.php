@@ -67,7 +67,7 @@ class BillsController extends Controller
         
         $bills_with_limit=DB::table("bills")
         ->join("customers","bills.cus_id","=","customers.id")
-        ->select("bills.*","customers.cus_name","customers.phone_number")
+        ->select("bills.*","customers.cus_name","customers.phone_number","bills.discount")
         ->orderByDesc('created_at')->limit(100)->get();
 
 
@@ -133,8 +133,11 @@ class BillsController extends Controller
         ->whereYear('created_at', Carbon::now()->year)
         ->value('total_benefit');
         
+        $total_discounts1 = Bill::whereMonth('created_at', Carbon::now()->month)
+        ->whereYear('created_at', Carbon::now()->year)
+        ->sum('discount');
 
-        $total_benefits_this_month_number=number_format($total_benefits_specific_bill,2);
+        $total_benefits_this_month_number=number_format($total_benefits_specific_bill-$total_discounts1,2);
 
 /////////////////////////////////////////////////////////////////////
 
@@ -150,7 +153,11 @@ class BillsController extends Controller
         ->value('total_benefit');
         
 
-        $total_benefits_this_year_number=number_format($total_benefits_this_year,2);
+
+        $total_discounts2 = Bill::whereYear('created_at', Carbon::now()->year)
+        ->sum('discount');
+
+        $total_benefits_this_year_number=number_format($total_benefits_this_year-$total_discounts2,2);
 
 /////////////////////////////////////////////////////////////////////
         $total_benefits_last_month = ProductBillRelation::query()
@@ -166,7 +173,13 @@ class BillsController extends Controller
         ->value('total_benefit');
         
 
-        $total_benefits_last_month_number=number_format($total_benefits_last_month,2);
+        $previousMonth = Carbon::now()->month == 1 ? 12 : Carbon::now()->month - 1;
+        $previousYear = Carbon::now()->month == 1 ? Carbon::now()->year - 1 : Carbon::now()->year;
+        $total_discounts3 = Bill::whereYear('created_at', $previousYear)
+        ->whereMonth('created_at', $previousMonth)
+        ->sum('discount'); 
+
+        $total_benefits_last_month_number=number_format($total_benefits_last_month-$total_discounts3,2);
         /////////////////////////////////////////////////////////////////////        
         
         $total_benefits_last_year = ProductBillRelation::query()
@@ -181,7 +194,11 @@ class BillsController extends Controller
         ->value('total_benefit');
         
 
-        $total_benefits_last_year_number=number_format($total_benefits_last_year,2);
+        $total_discounts4 = Bill::whereYear('created_at', Carbon::now()->year - 1)
+        ->sum('discount');
+
+
+        $total_benefits_last_year_number=number_format($total_benefits_last_year-$total_discounts4,2);
     
 
         /////////////////////////////////////////////////////////////////////
@@ -198,7 +215,10 @@ class BillsController extends Controller
         ->value('total_benefit');
         
 
-        $total_benefits_today_number=number_format($total_benefits_today,2);
+        $total_discounts5 = Bill::whereDay('created_at', Carbon::now()->day)
+        ->sum('discount');
+
+        $total_benefits_today_number=number_format($total_benefits_today-$total_discounts5,2);
 
 
         /////////////////////////////////////////////////////////////////////       
@@ -233,6 +253,7 @@ class BillsController extends Controller
         ,'product_bill_relations.original_packet_price'
         ,'product_bill_relations.original_peice_price'
         ,'bills.total_price'
+        ,'bills.discount'
         )
         ->where("bills.id","=",$bill_id)
         ->get();
@@ -241,8 +262,17 @@ class BillsController extends Controller
         foreach($total_benefits_specific_bill as $index){
             $total_products_price+=($index->number_of_packets*$index->original_packet_price+$index->number_of_pieces*$index->original_peice_price);
         }
-        $total_benefits_specific_bill_number=number_format(($total_benefits_specific_bill[0]->total_price)-$total_products_price,2);
+        $total_benefits_specific_bill_number=number_format(($total_benefits_specific_bill[0]->total_price)-$total_products_price-$total_benefits_specific_bill[0]->discount,2);
         return view("bill_benifit",["total_benefits_specific_bill"=>$total_benefits_specific_bill_number]);
+    }
+
+
+    public function discount(Request $request,$bill_id){
+        $bill=Bill::find($bill_id,"id");
+        $bill->discount=$request->discount;
+        $bill->save();
+
+        return to_route("show_bills")->with("message","تم إضافة الخصم بنجاح");
     }
 
 }

@@ -251,3 +251,56 @@ if(error_messages.text())
 
 
 
+$(function () {
+    let cat = $("#cat");
+
+    function filterProducts() {
+        return products.filter(product => {
+            return product.cat_id == cat.val(); // Use `==` for comparison
+        });
+    }
+
+    function generateTableRows(filteredProducts) {
+        const tbody = document.getElementById("products-table-body");
+        tbody.innerHTML = ""; // Clear previous data
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content"); // Get CSRF token
+
+        filteredProducts.forEach((product, index) => {
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td data-id="${product.id}" class="editable name" style="width:200px;">${product.name}</td>
+                <td data-id="${product.id}" class="editable n_pieces_in_packet">${product.n_pieces_in_packet ?? "غير متوفر"}</td>
+                <td data-id="${product.id}" class="editable original_packet_price">${product.original_packet_price}</td>
+                <td data-id="${product.id}" class="editable selling_packet_price">${product.selling_packet_price}</td>
+                <td data-id="${product.id}" class="editable piece_price">${product.piece_price}</td>
+                <td data-id="${product.id}" class="editable exicting_number_of_pieces">${product.exicting_number_of_pieces ?? 0}</td>
+                <td data-id="${product.id}" class="editable existing_number_of_pieces">${product.existing_number_of_pieces ?? 0}</td>
+                <td data-id="${product.id}" class="editable selling_customer_piece_price">${product.selling_customer_piece_price ?? ""}</td>
+                <td data-id="${product.id}" class="accept_pieces">${product.accept_pieces == 0 ? "لا" : "نعم"}</td>
+                <td>
+                    <form class="delete-form" action="/products/delete_product/${product.id}" method="POST">
+                        <input type="hidden" name="_token" value="${csrfToken}">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" value="حذف" style="background-color: red; color: white; border: none; padding: 5px 10px; border-radius: 3px;">
+                    </form>
+                </td>
+            `;
+
+            tbody.appendChild(row);
+        });
+    }
+
+    $("body").on("change", "#cat", function () {
+        let filteredProducts = filterProducts();
+        generateTableRows(filteredProducts);
+    });
+});
+
+
+
+
+
+

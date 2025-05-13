@@ -77,16 +77,14 @@ class mainController extends Controller
         return redirect()->back()->with("message","الفئة اتحذفت بنجاح");
     }
     public function products_view(){
-        $products_pagination = Product::join('categories', 'products.cat_id', '=', 'categories.id')
-        ->select('products.*', 'categories.name as category_name') 
-        ->simplePaginate(30);
+
 
         $products = Product::join('categories', 'products.cat_id', '=', 'categories.id')
         ->select('products.*', 'categories.name as category_name') 
         ->get();
 
         $categories=Category::all();
-        return view("products",["products"=>$products,"categories"=>$categories,"products_pagination"=>$products_pagination]);
+        return view("products",["products"=>$products,"categories"=>$categories]);
     }
     public function add_product(Request $request)
     {

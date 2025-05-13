@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="{{asset("CSS/show_bills.css")}}" >
+    <link rel="stylesheet" href="{{asset("all.min.css")}}" >
     <title>Document</title>
     <script src="{{ asset('jquery.min.js')  }}"></script>
     @vite(['resources/js/app.js', 'resources/js/show_bills.js'])
@@ -16,6 +17,17 @@
         <div>مرحباً , <span style="color:#fff">{{Auth::user()->name}} </span></div>
         <p>شركة ابو الدهب للتجارة</p>
 
+    </div>
+    <div class="discount_main">
+        <div class="discount">
+            <i class="fa-solid fa-circle-xmark" style="color:red;width:30px;height:30px;"></i>
+            <form id="form_of_data" action method="post">
+                @csrf
+                    <label for="discount">ادخل قيمة الخصم علي الفاتورة  </label>
+                    <input style="margin-bottom:50px" id="discount_input"  step="any" type="number" name="discount" id="discount" >
+            <input id="submit_button" type="submit" value="إضافة">
+            </form>
+        </div>
     </div>
     <div class="sidebar">
         <ul>
@@ -31,6 +43,10 @@
 
     <div class="body">
         <div class="content">
+            
+
+
+            
             <div class="filters">
                 <a href="{{route('exportBills')}}"><button class="Export">إنشاء ملف إكسيل لل فواتير</button></a>
 
@@ -48,6 +64,9 @@
                 </div>
             </div>
 
+
+        
+
             <div class="bills">
                 <table>
                     <thead>
@@ -58,6 +77,8 @@
                             <th>قيمة الفاتورة الاجمالية</th>
                             <th>التاريخ</th>
                             <th>رؤية مكسب الفاتورة</th>
+                            <th>  إضافة خصم</th>
+                            <th> قيمة الخصم</th>
                             <th>العمليات</th>
                         </tr>
                     </thead>
@@ -70,6 +91,8 @@
                                 <td>{{$index->total_price}}</td>
                                 <td>{{$index->created_at}}</td>
                                 <td><a href="{{route("bill_binefits",$index->id)}}">عرض مكسب الفاتورة</a></td>
+                                <td class="discount_button" data-id={{$index->id }}><button>خصم</button></td>
+                                <td id="discount_value">{{$index->discount ?? 0}}</td>
                                 <td><a href="{{route("show_specific_bill",$index->id)}}">عرض الفاتورة</a></td>
                             </tr>
                         @endforeach

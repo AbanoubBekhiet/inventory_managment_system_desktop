@@ -14,7 +14,6 @@ $(function(){
 
         filteredBills.forEach((bill,index )=> {
             const row = document.createElement('tr');
-
             const showBillUrl = `show_bills/show_specific_bill/${bill.id}`;
             const bill_benifit = `show_bills/bill_binefits/${bill.id}`;
             row.innerHTML = `
@@ -26,10 +25,13 @@ $(function(){
                 <td class="bill_benifit">
                     <a href="${bill_benifit}">عرض مكسب الفاتورة </a>
                 </td>
+                <td class="discount_button" data-id=${bill.id}><button>خصم</button></td>
+                <td id="discount_value"> ${bill.discount==null? 0:bill.discount}</td>
                 <td>
                     <a href="${showBillUrl}">عرض الفاتورة</a>
                 </td>
             `;
+
             tbody.appendChild(row);
         });
     }
@@ -69,8 +71,28 @@ $(function(){
         }
     })
     
+///////////////////////////////////////////////////////////discount
 
 
+    let exit_icon = document.querySelector(".discount i");
+    let whole_form = document.querySelector(".discount_main");
+    let form_of_data = document.querySelector("#form_of_data");
+    $("body").on("click", ".discount_button button", function() {
+        whole_form.style.display = "flex";
+        whole_form.style.height = document.documentElement.scrollHeight + "px";
+        let discountId = $(this).parent().data("id");
+        form_of_data.action = "/bills/show_bills/discount/" + discountId;
+    });
+    
+
+    
+
+    
+    exit_icon.addEventListener("click", function () {
+        $("#discount_input").val("");
+        whole_form.style.display = "none";
+    });
+    
 
     
 

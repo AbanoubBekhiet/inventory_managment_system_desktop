@@ -177,7 +177,15 @@ class customersController extends Controller
         ->whereYear('bills.created_at', Carbon::now()->year)
         ->where("bills.cus_id","=",$customer_id)
         ->first();
-/////////////////////////////////////////////////////////
+
+
+        $total_discounts1 = Bill::whereMonth('bills.created_at', Carbon::now()->month)
+        ->whereYear('bills.created_at', Carbon::now()->year)
+        ->where("bills.cus_id", "=", $customer_id)
+        ->sum("discount");
+
+        $total_benefits_this_month = (float) $total_benefits_this_month->total_benefit - (float) $total_discounts1;
+        /////////////////////////////////////////////////////////
         
         $total_benefits_this_year = DB::table('bills')
         ->join('product_bill_relations', 'bills.id', '=', 'product_bill_relations.bill_id')
@@ -193,7 +201,11 @@ class customersController extends Controller
         ->first();
 
 
+        $total_discounts2 = Bill::whereYear('bills.created_at', Carbon::now()->year)
+        ->where("bills.cus_id", "=", $customer_id)
+        ->sum("discount"); 
 
+        $total_benefits_this_year = (float) ($total_benefits_this_year->total_benefit ?? 0) - (float) $total_discounts2;
 
 /////////////////////////////////////////////////////////
 
@@ -212,7 +224,18 @@ class customersController extends Controller
         ->where("bills.cus_id","=",$customer_id)
         ->first();
 
-/////////////////////////////////////////////////////////
+
+        $previousMonth = Carbon::now()->month == 1 ? 12 : Carbon::now()->month - 1;
+
+$previousYear = Carbon::now()->month == 1 ? Carbon::now()->year - 1 : Carbon::now()->year;
+
+$total_discounts3 = Bill::whereMonth('bills.created_at', $previousMonth)
+    ->whereYear('bills.created_at', $previousYear)
+    ->where("bills.cus_id", "=", $customer_id)
+    ->sum("discount"); 
+
+    $total_benefits_last_month = (float) ($total_benefits_last_month->total_benefit ?? 0) - (float) $total_discounts3;
+    /////////////////////////////////////////////////////////
         
 
         $total_benefits_last_year = DB::table('bills')
@@ -228,8 +251,11 @@ class customersController extends Controller
         ->where("bills.cus_id","=",$customer_id)
         ->first();
 
+        $total_discounts4 = Bill::whereYear('bills.created_at', Carbon::now()->year - 1)
+        ->where("bills.cus_id", "=", $customer_id)
+        ->sum("discount");
 
-
+        $total_benefits_last_year = (float) ($total_benefits_last_year->total_benefit ?? 0) - (float) $total_discounts4;
         /////////////////////////////////////////////////////////
 
         

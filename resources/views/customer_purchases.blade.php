@@ -32,10 +32,10 @@
                 <p> إجمالي مبيعات هذه السنة {{$total_selling_this_year}}</p>
                 <p> إجمالي مبيعات الشهر الماضي {{$total_selling_last_month}}</p>
                 <p> إجمالي مبيعات السنة الماضية {{$total_selling_last_year}}</p>
-                <p> إجمالي ربح هذا الشهر {{$total_benefits_this_month_number->total_benefit}}</p>
-                <p> إجمالي ربح هذه السنة  {{$total_benefits_this_year_number->total_benefit}}</p>
-                <p> إجمالي ربح الشهر الماضي  {{$total_benefits_last_month_number->total_benefit ?? 0}}</p>
-                <p> إجمالي ربح السنة الماضي  {{$total_benefits_last_year_number->total_benefit ?? 0}}</p>
+                <p> إجمالي ربح هذا الشهر {{$total_benefits_this_month_number->total_benefit??0.0}}</p>
+                <p> إجمالي ربح هذه السنة  {{$total_benefits_this_year_number->total_benefit??0.0}}</p>
+                <p> إجمالي ربح الشهر الماضي  {{$total_benefits_last_month_number->total_benefit ?? 0.0}}</p>
+                <p> إجمالي ربح السنة الماضي  {{$total_benefits_last_year_number->total_benefit ?? 0.0}}</p>
             </div>           
     
   
@@ -52,6 +52,7 @@
                             <th>قيمة الفاتورة الاجمالية</th>
                             <th>التاريخ</th>
                             <th>مكسب الفاتورة</th>
+                            <th>خصم الفاتورة</th>
                             <th>العمليات</th>
                         </tr>
                     </thead>
@@ -63,6 +64,7 @@
                                 <td>{{$bill->total_price}}</td>
                                 <td>{{$bill->created_at}}</td>
                                 <td><a href="{{route("bill_binefits",$bill->id)}}">عرض مكسب الفاتورة</a></td>
+                                <td>{{$bill->discount ??0.0}}</td>
                                 <td><a href={{route("show_specific_bill",$bill->id)}}>عرض الفاتورة</a></td>
                             </tr>
                         @endforeach

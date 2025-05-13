@@ -43,8 +43,9 @@ Route::get('/bills/make_bills', [BillsController::class, "make_bills"])->name("m
 Route::post('/bills/bill_back', [BillsController::class, "bill_back"])->name("bill_back");
 Route::get('/bills/show_bills', [BillsController::class, "show_bills"])->name("show_bills");
 Route::get('/bills/show_bills/show_specific_bill/{bill_id}', [BillsController::class, "show_specific_bill"])->name("show_specific_bill");
-Route::get('/bills/exportBills', [BillsController::class, "exportBills"])->name("exportBills");
+Route::post('/bills/show_bills/discount/{bill_id}', [BillsController::class, "discount"])->name("discount");
 Route::get('/bills/show_bills/bill_binefits/{bill_id}', [BillsController::class, "bill_binefits"])->name("bill_binefits");
+Route::get('/bills/exportBills', [BillsController::class, "exportBills"])->name("exportBills");
 Route::get('/statistics', [BillsController::class, "statistics"])->name("statistics");
 
 

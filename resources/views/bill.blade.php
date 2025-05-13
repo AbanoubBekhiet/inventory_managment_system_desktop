@@ -74,7 +74,7 @@
                @foreach ($products as $product =>$index)
                    <tr>
                         <td>{{$product+1}}</td>
-                        <td >{{$index->name}} ---- {{$index->n_pieces_in_packet}} ق </td>
+                        <td >{{$index->name}} * {{$index->n_pieces_in_packet}} ق </td>
                         <td>{{$index->number_of_packets}}  </td>
                         <td>{{$index->packet_price}}  </td>
                         <td>{{$index->number_of_pieces}}  </td>

@@ -38,7 +38,6 @@ table tr td {
     text-align:start;
     border:1px solid #000;
     width:fit-content;
-    white-space: nowrap
 }
 table tr td:not(table tr td:first-child) {
     padding-right:5px;
