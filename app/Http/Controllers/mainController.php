@@ -80,7 +80,8 @@ class mainController extends Controller
 
 
         $products = Product::join('categories', 'products.cat_id', '=', 'categories.id')
-        ->select('products.*', 'categories.name as category_name') 
+        ->select('products.*', 'categories.name as category_name')
+        ->orderby("products.name","asc") 
         ->get();
 
         $categories=Category::all();

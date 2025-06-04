@@ -32,10 +32,10 @@
                 <p> إجمالي مبيعات هذه السنة {{$total_selling_this_year}}</p>
                 <p> إجمالي مبيعات الشهر الماضي {{$total_selling_last_month}}</p>
                 <p> إجمالي مبيعات السنة الماضية {{$total_selling_last_year}}</p>
-                <p> إجمالي ربح هذا الشهر {{$total_benefits_this_month_number->total_benefit??0.0}}</p>
-                <p> إجمالي ربح هذه السنة  {{$total_benefits_this_year_number->total_benefit??0.0}}</p>
-                <p> إجمالي ربح الشهر الماضي  {{$total_benefits_last_month_number->total_benefit ?? 0.0}}</p>
-                <p> إجمالي ربح السنة الماضي  {{$total_benefits_last_year_number->total_benefit ?? 0.0}}</p>
+                <p> إجمالي ربح هذا الشهر {{$total_benefits_this_month_number}}</p>
+                <p> إجمالي ربح هذه السنة  {{$total_benefits_this_year_number}}</p>
+                <p> إجمالي ربح الشهر الماضي  {{$total_benefits_last_month_number}}</p>
+                <p> إجمالي ربح السنة الماضي  {{$total_benefits_last_year_number}}</p>
             </div>           
     
   

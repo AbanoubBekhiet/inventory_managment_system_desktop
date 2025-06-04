@@ -24,39 +24,52 @@
             <li><a href="{{route( 'statistics')}}">إحصائيات</a></li>
         </ul>
     </div>
-    <div class="content" style="position:relative;" >
-        <div class="header2 " style="font-size:19px;">
-            <p style='font-size:25px;margin:auto;width:fit-content;margin-block:30px;margin'>شركة ابو الدهب للتجارة والتوزيع</p>
-            <div style="font-size:19px;display:flex;justify-content:space-evenly;width:300px;">
-                <div style="display:flex;position:absolute;top:30px;right:20px;">
-                    <div>
-                        ميلاد :
-                    </div>
-                    <div style="display:flex;flex-direction:column;">
-                        <span> <i class="fa-solid fa-phone-volume"></i> <i class="fa-brands fa-whatsapp"></i>&nbsp&nbsp 01200277612</span>
-                        <span> <i class="fa-solid fa-phone-volume"></i> <i class="fa-brands fa-whatsapp"></i>&nbsp&nbsp 01287573679</span>
-                    </div>
-                </div>
-            </div>
-            <hr style="height:2px;background-color:black;margin-top:20px;">
-            <div class="customer_data" style="position:relative;">
+<div class="content" style="position:relative;" >
 
+
+
+
+    <div class="date">
                 @php
-                $date = new DateTime($products[0]->created_at);
-                $day = $date->format('Y-m-d');  
+                    $date = new DateTime($products[0]->created_at);
+                    $day = $date->format('Y-m-d');  
                 @endphp
                 <div class="date" style="position:relative;right:10px;top:10px;">التاريخ : {{$day}}</div>
-                <div style="display:flex;justify-content:space-evenly;margin-top:50px;">
-                    <span>اسم العميل : {{$products[0]->cus_name}}</span>
-                    <span>رقم الهاتف : {{$products[0]->phone_number}}</span>
-                </div>
-                <div style="width:fit-content;margin:auto">
-                    عنوان العميل :{{$products[0]->address}}
-                </div>
+    </div>
+
+
+<div dir="rtl" class="header2" style="font-size:19px;">
+    <div style="display:flex; justify-content:space-between;">
+        <p style="font-size:25px;">شركة ابو الدهب للتجارة والتوزيع</p>
+        <div style="display:flex; gap:10px; align-items:flex-start;">
+            <div>ميلاد :</div>
+            <div style="display:flex; flex-direction:column;">
+                <span><i class="fa-solid fa-phone-volume"></i> <i class="fa-brands fa-whatsapp"></i>&nbsp;&nbsp;01200277612</span>
+                <span><i class="fa-solid fa-phone-volume"></i> <i class="fa-brands fa-whatsapp"></i>&nbsp;&nbsp;01287573679</span>
             </div>
         </div>
+    </div>
+
+    <div style="display:flex; justify-content:space-evenly; margin-top:10px;">
+        <span>اسم العميل : {{$products[0]->cus_name}}</span>
+        <span>رقم الهاتف : {{$products[0]->phone_number}}</span>
+        <span>عنوان العميل : {{$products[0]->address}}</span>
+    </div>
+
+    <hr style="height:2px; background-color:black; margin-top:20px;">
+</div>
 
 
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
         <table >
             <thead >
                 <tr>

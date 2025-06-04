@@ -121,7 +121,7 @@ class BillsController extends Controller
 /////////////////////////////////////////////////////////////////////
 
 
-        $total_benefits_specific_bill = ProductBillRelation::query()
+        $total_benefits_this_month = ProductBillRelation::query()
         ->selectRaw('
             SUM(
                 total_product_price - 
@@ -137,88 +137,93 @@ class BillsController extends Controller
         ->whereYear('created_at', Carbon::now()->year)
         ->sum('discount');
 
-        $total_benefits_this_month_number=number_format($total_benefits_specific_bill-$total_discounts1,2);
+        $total_benefits_this_month_number=number_format($total_benefits_this_month-$total_discounts1,2);
 
 /////////////////////////////////////////////////////////////////////
 
-        $total_benefits_this_year = ProductBillRelation::query()
-        ->selectRaw('
-            SUM(
-                total_product_price - 
-                (COALESCE(number_of_packets, 0) * COALESCE(original_packet_price, 0) + 
-                 COALESCE(number_of_pieces, 0) * COALESCE(original_peice_price, 0))
-            ) AS total_benefit
-        ')
-        ->whereYear('created_at', Carbon::now()->year)
-        ->value('total_benefit');
-        
+ $total_benefits_this_year = ProductBillRelation::query()
+    ->selectRaw('
+        SUM(
+            total_product_price - 
+            (COALESCE(number_of_packets, 0) * COALESCE(original_packet_price, 0) + 
+             COALESCE(number_of_pieces, 0) * COALESCE(original_peice_price, 0))
+        ) AS total_benefit
+    ')
+    ->whereBetween('created_at', [
+        Carbon::now()->startOfYear(),
+        Carbon::now()
+    ])
+    ->value('total_benefit') ?? 0;
 
+$total_discounts2 = Bill::whereBetween('created_at', [
+    Carbon::now()->startOfYear(),
+    Carbon::now()
+])
+    ->sum('discount') ?? 0;
 
-        $total_discounts2 = Bill::whereYear('created_at', Carbon::now()->year)
-        ->sum('discount');
-
-        $total_benefits_this_year_number=number_format($total_benefits_this_year-$total_discounts2,2);
-
+$total_benefits_this_year_number = number_format($total_benefits_this_year - $total_discounts2, 2);
 /////////////////////////////////////////////////////////////////////
-        $total_benefits_last_month = ProductBillRelation::query()
-        ->selectRaw('
-            SUM(
-                total_product_price - 
-                (COALESCE(number_of_packets, 0) * COALESCE(original_packet_price, 0) + 
-                 COALESCE(number_of_pieces, 0) * COALESCE(original_peice_price, 0))
-            ) AS total_benefit
-        ')
-        ->whereYear('created_at', Carbon::now()->year)->whereMonth('created_at', Carbon::now()->month==1?12:Carbon::now()->month-1)
-        ->whereYear('created_at', Carbon::now()->month==1?Carbon::now()->year-1:Carbon::now()->year)
-        ->value('total_benefit');
-        
+$lastMonth = Carbon::now()->subMonth();
+$total_benefits_last_month = ProductBillRelation::query()
+    ->selectRaw('
+        SUM(
+            total_product_price - 
+            (COALESCE(number_of_packets, 0) * COALESCE(original_packet_price, 0) + 
+             COALESCE(number_of_pieces, 0) * COALESCE(original_peice_price, 0))
+        ) AS total_benefit
+    ')
+    ->whereYear('created_at', $lastMonth->year)
+    ->whereMonth('created_at', $lastMonth->month)
+    ->value('total_benefit') ?? 0;
 
-        $previousMonth = Carbon::now()->month == 1 ? 12 : Carbon::now()->month - 1;
-        $previousYear = Carbon::now()->month == 1 ? Carbon::now()->year - 1 : Carbon::now()->year;
-        $total_discounts3 = Bill::whereYear('created_at', $previousYear)
-        ->whereMonth('created_at', $previousMonth)
-        ->sum('discount'); 
+$total_discounts3 = Bill::whereYear('created_at', $lastMonth->year)
+    ->whereMonth('created_at', $lastMonth->month)
+    ->sum('discount') ?? 0;
 
-        $total_benefits_last_month_number=number_format($total_benefits_last_month-$total_discounts3,2);
+$total_benefits_last_month_number = number_format($total_benefits_last_month - $total_discounts3, 2);
         /////////////////////////////////////////////////////////////////////        
         
         $total_benefits_last_year = ProductBillRelation::query()
-        ->selectRaw('
-            SUM(
-                total_product_price - 
-                (COALESCE(number_of_packets, 0) * COALESCE(original_packet_price, 0) + 
-                 COALESCE(number_of_pieces, 0) * COALESCE(original_peice_price, 0))
-            ) AS total_benefit
-        ')
-        ->whereYear('created_at', Carbon::now()->year-1)
-        ->value('total_benefit');
-        
+            ->selectRaw('
+                SUM(
+                    total_product_price - 
+                    (COALESCE(number_of_packets, 0) * COALESCE(original_packet_price, 0) + 
+                    COALESCE(number_of_pieces, 0) * COALESCE(original_peice_price, 0))
+                ) AS total_benefit
+            ')
+            ->whereBetween('created_at', [
+                Carbon::create(Carbon::now()->year - 1, 1, 1)->startOfYear(),
+                Carbon::create(Carbon::now()->year - 1, 12, 31)->endOfYear()
+            ])
+            ->value('total_benefit') ?? 0;
 
-        $total_discounts4 = Bill::whereYear('created_at', Carbon::now()->year - 1)
-        ->sum('discount');
+        $total_discounts4 = Bill::whereBetween('created_at', [
+            Carbon::create(Carbon::now()->year - 1, 1, 1)->startOfYear(),
+            Carbon::create(Carbon::now()->year - 1, 12, 31)->endOfYear()
+        ])
+            ->sum('discount') ?? 0;
+
+        $total_benefits_last_year_number = number_format($total_benefits_last_year - $total_discounts4, 2);
 
 
-        $total_benefits_last_year_number=number_format($total_benefits_last_year-$total_discounts4,2);
     
 
         /////////////////////////////////////////////////////////////////////
 
-        $total_benefits_today = ProductBillRelation::query()
-        ->selectRaw('
-            SUM(
-                total_product_price - 
-                (COALESCE(number_of_packets, 0) * COALESCE(original_packet_price, 0) + 
-                 COALESCE(number_of_pieces, 0) * COALESCE(original_peice_price, 0))
-            ) AS total_benefit
-        ')
-        ->whereDay('created_at', Carbon::now()->day)
-        ->value('total_benefit');
-        
+            $total_benefits_today = ProductBillRelation::query()
+                ->selectRaw('
+                    SUM(
+                        total_product_price - 
+                        (COALESCE(number_of_packets, 0) * COALESCE(original_packet_price, 0) + 
+                        COALESCE(number_of_pieces, 0) * COALESCE(original_peice_price, 0))
+                    ) AS total_benefit
+                ')
+                ->whereDate('created_at', Carbon::today())
+                ->value('total_benefit') ?? 0;
 
-        $total_discounts5 = Bill::whereDay('created_at', Carbon::now()->day)
-        ->sum('discount');
+            $total_discounts5 = Bill::whereDate('created_at', Carbon::today())->sum('discount') ?? 0;
 
-        $total_benefits_today_number=number_format($total_benefits_today-$total_discounts5,2);
+            $total_benefits_today_number = number_format($total_benefits_today - $total_discounts5, 2);
 
 
         /////////////////////////////////////////////////////////////////////       

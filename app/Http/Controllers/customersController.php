@@ -185,6 +185,7 @@ class customersController extends Controller
         ->sum("discount");
 
         $total_benefits_this_month = (float) $total_benefits_this_month->total_benefit - (float) $total_discounts1;
+        // dd([$total_benefits_this_month,$total_discounts1]);
         /////////////////////////////////////////////////////////
         
         $total_benefits_this_year = DB::table('bills')
